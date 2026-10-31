@@ -51,7 +51,7 @@ describe('Admin settings (e2e)', () => {
     const { body } = await patch({ siteName: 'Sheila', colors }).expect(200);
     expect(body.siteName).toBe('Sheila');
     expect(body.colors).toEqual(colors);
-    expect(body.font).toEqual({ heading: 'clash', body: 'inter' });
+    expect(body.font).toEqual({ heading: 'unbounded', body: 'onest' });
   });
 
   it.each([

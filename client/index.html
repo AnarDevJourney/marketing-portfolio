@@ -4,9 +4,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d0c0a" />
     <title>Portfolio</title>
+    <script>
+      // Apply the cached theme before React loads to avoid a color flash.
+      // Must stay in sync with src/theme/applyTheme.ts.
+      ;(function () {
+        try {
+          var cache = JSON.parse(localStorage.getItem('theme-cache') || 'null')
+          if (!cache || !cache.colors) return
+          var root = document.documentElement
+          for (var key in cache.colors) {
+            var hex = cache.colors[key].replace('#', '')
+            root.style.setProperty(
+              '--' + key,
+              parseInt(hex.slice(0, 2), 16) +
+                ' ' +
+                parseInt(hex.slice(2, 4), 16) +
+                ' ' +
+                parseInt(hex.slice(4, 6), 16),
+            )
+          }
+        } catch (e) {}
+      })()
+    </script>
   </head>
-  <body>
+  <body class="grain">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

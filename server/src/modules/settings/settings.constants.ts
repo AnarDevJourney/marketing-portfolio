@@ -1,7 +1,17 @@
 import type { Locale } from '../../common/locales.js';
 
-export const HEADING_FONTS = ['clash', 'space-grotesk', 'syne'] as const;
-export const BODY_FONTS = ['inter', 'manrope', 'dm-sans'] as const;
+/**
+ * Font options. Every one was checked to contain the Azerbaijani letters
+ * (Ə ə Ğ ğ I ı İ Ş ş Ç ç Ö ö Ü ü) and Cyrillic. The spec's original picks
+ * failed that check (Syne/Manrope lack Ə, Space Grotesk/DM Sans lack
+ * Cyrillic, Clash Display isn't on fontsource).
+ */
+export const HEADING_FONTS = [
+  'unbounded',
+  'geologica',
+  'playfair-display',
+] as const;
+export const BODY_FONTS = ['onest', 'inter', 'commissioner'] as const;
 export const SOCIAL_PLATFORMS = [
   'instagram',
   'linkedin',
@@ -34,17 +44,18 @@ export type SectionKey = (typeof SECTION_KEYS)[number];
 
 export const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 
-/** Placeholder values written on first start / seed. Real palette comes in Phase 3. */
+/** Values written on first start / seed. */
 export const DEFAULT_SETTINGS = {
   siteName: 'Portfolio',
+  // "Signal" palette — see docs/design/DIRECTION.md.
   colors: {
-    primary: '#ff5a36',
-    accent: '#c6f432',
-    background: '#0e0e0e',
-    surface: '#1a1a1a',
-    text: '#f4f1ea',
+    primary: '#ff5b2e',
+    accent: '#b8a6ff',
+    background: '#0d0c0a',
+    surface: '#181613',
+    text: '#f2ede3',
   },
-  font: { heading: 'clash' as HeadingFont, body: 'inter' as BodyFont },
+  font: { heading: 'unbounded' as HeadingFont, body: 'onest' as BodyFont },
   socials: [],
   contact: {
     email: 'hello@domain.az',

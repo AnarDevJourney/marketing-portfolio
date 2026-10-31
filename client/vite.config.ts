@@ -6,4 +6,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: { port: 5173 },
+  // Libraries reached only through dynamic import(); pre-bundle them so the
+  // dev server doesn't re-optimize mid-session and break already-loaded pages.
+  optimizeDeps: { include: ['lenis', 'gsap', 'gsap/ScrollTrigger'] },
 })

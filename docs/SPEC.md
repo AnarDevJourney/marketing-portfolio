@@ -521,6 +521,8 @@ export function applyTheme(c: Colors) {
 
 ### Şriftlər
 
+> **Faza 3 dəyişikliyi:** spec-dəki şriftlər yoxlamadan keçmədi (Syne və Manrope-da `Ə` yoxdur, Space Grotesk və DM Sans-da kiril yoxdur, Clash Display fontsource-da yoxdur). Yeni variantlar — başlıq: `unbounded` | `geologica` | `playfair-display`; mətn: `onest` | `inter` | `commissioner`. Hamısı Azərbaycan hərfləri + kiril üçün yoxlanılıb. Bax: `docs/design/DIRECTION.md`.
+
 Admin 2–3 əvvəlcədən seçilmiş variantdan seçir (hər şrift deyil, dizaynı pozmamaq üçün). Şriftlər `@fontsource` ilə self-host edilir; seçilən şriftin CSS-i dinamik import ilə yüklənir və `--font-heading`, `--font-body` dəyişənləri təyin olunur. Bütün variantlar Azərbaycan hərflərini (ə, ğ, ı, ş, ç, ö, ü) dəstəkləməlidir — seçmədən əvvəl yoxla.
 
 ### i18n

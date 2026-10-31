@@ -59,10 +59,11 @@ export const DEFAULT_HERO = {
     en: 'Marketing specialist',
     ru: 'Маркетолог',
   },
+  // *word* = marker highlight on the site (see client SplitText)
   title: {
-    az: 'Brendləri hekayəyə çevirirəm',
-    en: 'I turn brands into stories',
-    ru: 'Превращаю бренды в истории',
+    az: 'Brendləri *hekayəyə* çevirirəm',
+    en: 'I turn brands into *stories*',
+    ru: 'Превращаю бренды в *истории*',
   },
   subtitle: { az: '', en: '', ru: '' },
   cta: {

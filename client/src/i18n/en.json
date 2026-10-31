@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "work": "Work",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "home": "Home"
+  },
+  "sections": {
+    "hero": "Intro",
+    "clients": "Clients",
+    "about": "About",
+    "services": "Services",
+    "work": "Selected work",
+    "testimonials": "Testimonials",
+    "contact": "Contact"
+  },
+  "menu": { "open": "Menu", "close": "Close", "language": "Language" },
+  "cursor": { "view": "View", "drag": "Drag", "open": "Open" },
+  "common": {
+    "scroll": "Scroll down",
+    "backToTop": "Back to top",
+    "loading": "Loading",
+    "retry": "Try again",
+    "comingSoon": "Coming soon"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "text": "The site could not load. Please try again in a moment."
+  },
+  "notFound": {
+    "title": "This page got lost in the noise",
+    "text": "The page you are looking for doesn't exist or has moved.",
+    "home": "Back to home"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "madeWith": "Signal, not noise."
+  }
+}

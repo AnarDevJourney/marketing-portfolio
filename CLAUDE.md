@@ -8,7 +8,7 @@ Domain placeholder: domain.az.
 
 ## Stack
 - client/: React + Vite + TS, Tailwind v4, Motion, GSAP+ScrollTrigger, Lenis,
-  RTK Query, react-i18next, Ant Design (ADMIN ONLY)
+  RTK Query, react-i18next, React Router 8, Ant Design (ADMIN ONLY)
 - server/: NestJS + Mongoose + MongoDB, MinIO, JWT (single admin)
 - deploy/: Docker Compose + Caddy on Hetzner; client on Netlify
 - Linting: oxlint (scaffold default) + Prettier in both apps.
@@ -18,8 +18,15 @@ Domain placeholder: domain.az.
 - Never import antd or admin code into public site chunks.
 - Animate only transform/opacity. Every motion component must respect
   useReducedMotion() and disable heavy effects on touch devices.
-- GSAP inside useGSAP() for cleanup. Lenis is synced to gsap.ticker.
-- Colors only via Tailwind tokens backed by CSS variables (no hex in JSX).
+- Motion: use `m.*` components (LazyMotion strict in main.tsx), never `motion.*`;
+  number tweens via lib/tween.ts, not Motion's animate() (keeps initial JS < 200 KB gzip).
+- GSAP only through hooks/useGsap (lazy-loaded, gsap.context cleanup) — never import
+  gsap statically. Lenis (lib/lenis.ts) is synced to gsap.ticker; use scrollToTarget().
+- Colors only via Tailwind tokens backed by CSS variables (no hex in JSX):
+  bg-background, bg-surface, text-fg, bg-primary, text-accent (+ /opacity).
+  Type scale: text-display/h1/h2/h3/lead/label; spacing: px-gutter, py-section.
+- Headings support `*word*` = marker highlight (SplitText → Highlight).
+- Design direction "Signal": docs/design/DIRECTION.md; live style guide at /dev/design (dev only).
 - All translatable content uses LocalizedString { az, en, ru };
   read via useLocalized(). Static UI strings via react-i18next.
 - Every admin write must invalidate the related public cache keys.
@@ -52,4 +59,4 @@ Domain placeholder: domain.az.
 
 ## Workflow
 - Work phase by phase (docs/SPEC.md §15). Small commits per feature.
-- Before UI work: check the design references in docs/design/.
+- Before UI work: read docs/design/DIRECTION.md.

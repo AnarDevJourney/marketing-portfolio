@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "work": "İşlər",
+    "about": "Haqqımda",
+    "services": "Xidmətlər",
+    "contact": "Əlaqə",
+    "home": "Ana səhifə"
+  },
+  "sections": {
+    "hero": "Giriş",
+    "clients": "Müştərilər",
+    "about": "Haqqımda",
+    "services": "Xidmətlər",
+    "work": "Seçilmiş işlər",
+    "testimonials": "Rəylər",
+    "contact": "Əlaqə"
+  },
+  "menu": { "open": "Menyu", "close": "Bağla", "language": "Dil" },
+  "cursor": { "view": "Bax", "drag": "Sürüşdür", "open": "Aç" },
+  "common": {
+    "scroll": "Aşağı sürüşdür",
+    "backToTop": "Yuxarı qayıt",
+    "loading": "Yüklənir",
+    "retry": "Yenidən cəhd et",
+    "comingSoon": "Tezliklə"
+  },
+  "error": {
+    "title": "Bir şey alınmadı",
+    "text": "Sayt yüklənə bilmədi. Bir az sonra yenidən yoxlayın."
+  },
+  "notFound": {
+    "title": "Bu səhifə səs-küydə itib",
+    "text": "Axtardığınız səhifə yoxdur və ya köçürülüb.",
+    "home": "Ana səhifəyə qayıt"
+  },
+  "footer": {
+    "rights": "Bütün hüquqlar qorunur",
+    "madeWith": "Siqnal, səs-küy yox."
+  }
+}

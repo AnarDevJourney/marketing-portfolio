@@ -1,3 +1,132 @@
 @import 'tailwindcss';
 
-/* Theme tokens (colors, fonts) are wired up in Phase 3 — see docs/SPEC.md §10. */
+/*
+ * Design tokens — see docs/design/DIRECTION.md.
+ * Colors come from runtime CSS variables (RGB triplets) set by applyTheme(),
+ * so the admin can change them. Fonts likewise via --heading-family/--body-family.
+ */
+@theme {
+  --color-primary: rgb(var(--primary));
+  --color-accent: rgb(var(--accent));
+  --color-background: rgb(var(--background));
+  --color-surface: rgb(var(--surface));
+  --color-fg: rgb(var(--text));
+
+  --font-heading: var(--heading-family), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--body-family), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(2.5rem, 0.4rem + 9vw, 10rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.045em;
+  --text-h1: clamp(2.5rem, 1rem + 5.6vw, 6.5rem);
+  --text-h1--line-height: 0.95;
+  --text-h1--letter-spacing: -0.04em;
+  --text-h2: clamp(2rem, 1.1rem + 3.2vw, 4rem);
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h3: clamp(1.375rem, 1rem + 1.2vw, 2.25rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--letter-spacing: -0.02em;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --text-lead--line-height: 1.45;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.18em;
+
+  --spacing-gutter: clamp(1rem, 4vw, 3.5rem);
+  --spacing-section: clamp(6rem, 12vw, 12rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Defaults before the theme is applied ("Signal" palette). */
+:root {
+  --primary: 255 91 46;
+  --accent: 184 166 255;
+  --background: 13 12 10;
+  --surface: 24 22 19;
+  --text: 242 237 227;
+  --heading-family: 'Unbounded Variable';
+  --body-family: 'Onest Variable';
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    @apply bg-background text-fg;
+    -webkit-text-size-adjust: 100%;
+    /* long words at display sizes must never cause sideways scrolling */
+    overflow-x: clip;
+  }
+
+  body {
+    @apply font-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading text-balance;
+    hyphens: auto;
+  }
+
+  ::selection {
+    @apply bg-primary text-background;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-accent;
+  }
+}
+
+@layer utilities {
+  .text-label {
+    @apply font-body font-medium uppercase;
+  }
+
+  /* Film grain over the whole page; static so it costs nothing per frame. */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Custom cursor replaces the native one (inputs keep their text cursor). */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none;
+}
+html.has-custom-cursor :is(input, textarea, select) {
+  cursor: text;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
