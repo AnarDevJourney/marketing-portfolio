@@ -1,8 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { HttpAdapterHost } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import { DuplicateKeyFilter } from './common/filters/duplicate-key.filter.js';
 import { Env } from './config/env.js';
 
 /** Global app configuration, shared by main.ts and the e2e tests. */
@@ -16,6 +18,9 @@ export function configureApp(app: NestExpressApplication) {
   app.use(helmet({ contentSecurityPolicy: isProd ? undefined : false }));
   app.enableCors({ origin: config.get('CORS_ORIGINS', { infer: true }) });
   app.setGlobalPrefix('api');
+  app.useGlobalFilters(
+    new DuplicateKeyFilter(app.get(HttpAdapterHost).httpAdapter),
+  );
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

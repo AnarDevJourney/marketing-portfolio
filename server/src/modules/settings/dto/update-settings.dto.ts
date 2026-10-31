@@ -5,6 +5,7 @@ import {
   ArrayUnique,
   IsArray,
   IsBoolean,
+  IsDefined,
   IsEmail,
   IsIn,
   IsInt,
@@ -62,6 +63,7 @@ export class ContactDto {
   @MaxLength(40)
   phone?: string;
 
+  @IsDefined()
   @ValidateNested()
   @Type(() => LocalizedStringDto)
   location: LocalizedStringDto;
@@ -77,10 +79,12 @@ export class SectionDto {
 }
 
 export class SeoDto {
+  @IsDefined()
   @ValidateNested()
   @Type(() => LocalizedStringDto)
   title: LocalizedStringDto;
 
+  @IsDefined()
   @ValidateNested()
   @Type(() => LocalizedStringDto)
   description: LocalizedStringDto;

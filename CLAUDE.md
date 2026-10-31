@@ -28,7 +28,16 @@ Domain placeholder: domain.az.
 - Server is ESM (`"type": "module"`): relative imports use the `.js` suffix;
   type-only imports (e.g. mongoose `Connection`) must use `import type`.
 - Module pattern: schema, dto/, service, admin.controller.ts, public.controller.ts.
-  Singletons (settings, hero, about): ensureDefaults() + updateOne({}, {$set}).
+  Singletons: settings (PATCH, $set per top-level field), hero/about (PUT, replaceOne).
+  Sortable collections (projects, clients, testimonials, services) extend
+  common/crud/OrderedCrudService (CRUD, reorder, cached published lists).
+  Declare `PATCH reorder` before `:id` routes.
+- Public responses are cached via PublicCacheService.wrap(key); admin writes call
+  invalidate(prefix). Keys live in common/cache/cache-keys.ts.
+- Required nested DTO fields need `@IsDefined()` before `@ValidateNested()`
+  (ValidateNested alone lets `undefined` through → 500 from Mongoose).
+- Media refs: validate with MediaService.assertExist(ids, 'image'|'video'|'file');
+  populate with populateMedia(...paths).
 - New fields that reference Media must be added to MEDIA_REFERENCES
   (server/src/modules/media/media.constants.ts) so in-use deletes are blocked.
 

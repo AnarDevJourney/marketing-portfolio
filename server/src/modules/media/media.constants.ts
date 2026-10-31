@@ -44,4 +44,9 @@ export const MEDIA_REFERENCES: { collection: string; fields: string[] }[] = [
     collection: 'settings',
     fields: ['logo', 'logoDark', 'favicon', 'seo.ogImage'],
   },
+  { collection: 'hero', fields: ['background.media', 'background.poster'] },
+  { collection: 'about', fields: ['photo', 'cv'] },
+  { collection: 'projects', fields: ['cover', 'coverVideo', 'gallery'] },
+  { collection: 'clients', fields: ['logo'] },
+  { collection: 'testimonials', fields: ['avatar'] },
 ];

@@ -52,3 +52,7 @@ MediaSchema.index({ type: 1, createdAt: -1 });
 /** Fields sent to clients when media is populated into other documents. */
 export const MEDIA_PUBLIC_FIELDS =
   'url type mimeType width height duration variants blurDataUrl alt';
+
+/** Populate options for media references at the given paths. */
+export const populateMedia = (...paths: string[]) =>
+  paths.map((path) => ({ path, select: MEDIA_PUBLIC_FIELDS }));

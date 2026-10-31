@@ -1,15 +1,14 @@
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import {
   BadRequestException,
   ConflictException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import type { Cache } from 'cache-manager';
 import { type Connection, Model, Types } from 'mongoose';
 import { randomUUID } from 'node:crypto';
+import { CACHE_KEYS } from '../../common/cache/cache-keys.js';
+import { PublicCacheService } from '../../common/cache/public-cache.service.js';
 import { ListMediaDto } from './dto/list-media.dto.js';
 import { UpdateMediaDto } from './dto/update-media.dto.js';
 import { processImage } from './image-processor.js';
@@ -35,7 +34,7 @@ export class MediaService {
   constructor(
     @InjectModel(Media.name) private readonly media: Model<Media>,
     @InjectConnection() private readonly connection: Connection,
-    @Inject(CACHE_MANAGER) private readonly cache: Cache,
+    private readonly cache: PublicCacheService,
     private readonly storage: StorageService,
   ) {}
 
@@ -76,7 +75,7 @@ export class MediaService {
       .lean();
     if (!doc) throw new NotFoundException('Media not found');
     // Media is embedded in many public responses; alt text changed, so drop them all.
-    await this.cache.clear();
+    await this.cache.invalidate(CACHE_KEYS.all);
     return doc;
   }
 
@@ -117,13 +116,21 @@ export class MediaService {
     return usage.flat();
   }
 
-  /** Throws if any of the given ids is not an existing media document. */
-  async assertExist(ids: (string | null | undefined)[]) {
-    const unique = [...new Set(ids.filter((id): id is string => !!id))];
+  /** Throws unless every given id is an existing media document (of `type`, if set). */
+  async assertExist(
+    ids: (string | Types.ObjectId | null | undefined)[],
+    type?: MediaKind,
+  ) {
+    const unique = [...new Set(ids.filter((id) => !!id).map(String))];
     if (!unique.length) return;
-    const found = await this.media.countDocuments({ _id: { $in: unique } });
+    const found = await this.media.countDocuments({
+      _id: { $in: unique },
+      ...(type && { type }),
+    });
     if (found !== unique.length) {
-      throw new BadRequestException('Referenced media does not exist');
+      throw new BadRequestException(
+        `Referenced media does not exist${type ? ` or is not a ${type}` : ''}`,
+      );
     }
   }
 
