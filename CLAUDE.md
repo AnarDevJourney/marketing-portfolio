@@ -31,6 +31,11 @@ Domain placeholder: domain.az.
 - Service icons come from the curated map in lib/icons.ts (admin picks from it).
 - Images: components/ui/Img (WebP srcset + blur placeholder + width/height).
 - Design direction "Signal": docs/design/DIRECTION.md; live style guide at /dev/design (dev only).
+- Admin (client/src/pages/admin, components/admin, admin/, api/adminApi.ts): Ant Design 6,
+  own Redux store (admin/store.ts), UI texts in Azerbaijani. Patterns: LocalizedInput (+ admin/rules
+  lsRequired), MediaPicker / MediaListPicker (form value = populated Media, send toId()),
+  SortableTable / SortableList (dnd-kit), useUnsavedChanges(dirty), PageHeader ("Saytda bax").
+  Images need alt text (AZ) before they can be picked.
 - All translatable content uses LocalizedString { az, en, ru };
   read via useLocalized(). Static UI strings via react-i18next.
 - Every admin write must invalidate the related public cache keys.

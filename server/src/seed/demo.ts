@@ -70,10 +70,18 @@ async function seedDemo() {
       return;
     }
     const media = app.get(MediaService);
-    const upload = async (data: Buffer, name: string, mime: string) => {
+    const upload = async (
+      data: Buffer,
+      name: string,
+      mime: string,
+      alt?: L,
+    ) => {
       const [doc] = await media.upload([
         { originalname: name, mimetype: mime, size: data.length, buffer: data },
       ]);
+      await media.update(doc._id, {
+        alt: alt ?? ls('Demo şəkil', 'Demo image', 'Демо-изображение'),
+      });
       return doc._id.toString();
     };
     const image = (w: number, h: number, seed: number, caption = '') =>
@@ -222,7 +230,12 @@ async function seedDemo() {
       'Arcadia',
       'Kinetik',
     ]) {
-      const id = await upload(await logo(name), `${name}.png`, 'image/png');
+      const id = await upload(
+        await logo(name),
+        `${name}.png`,
+        'image/png',
+        ls(name, name, name),
+      );
       await clients.create({ name, logo: id, published: true });
     }
 
