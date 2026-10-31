@@ -439,6 +439,7 @@ Dil prefiksi olmayanda `settings.locales.default` istifadə olunur. Dil seçimi 
 ### Case study səhifəsi
 
 - Ana səhifədən keçid zamanı cover şəkli `layoutId` ilə "böyüyərək" detal səhifəsinin hero-suna çevrilir (shared element transition).
+  > Faza 4: `layoutId` route-lar arası `AnimatePresence mode="wait"` ilə işləmədiyi üçün eyni effekt FLIP ilə edilib (`lib/shared-cover.ts`: kartın koordinatları saxlanılır, case study cover-i oradan transform ilə böyüyür; bu keçiddə pərdə atlanır).
 - Struktur: hero (cover + başlıq + meta: müştəri, il, kateqoriya) → Challenge → Solution → Results (böyük animasiyalı rəqəmlər) → Qalereya (masonry, lightbox) → Növbəti layihə (tam ekran link).
 - Results bölməsi marketoloq üçün ən vacib hissədir; rəqəmlər görünüş sahəsinə girəndə sayılır.
 
@@ -602,6 +603,7 @@ Ant Design əsasında, sadə sidebar layout. Məqsəd: texniki olmayan istifadə
 - **Validasiya:** global `ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })`.
 - **Upload:** MIME + uzantı ağ siyahısı, ölçü limiti, fayl adları UUID ilə əvəz olunur; SVG upload qadağandır (XSS riski).
 - **Rich text:** bio və s. markdown kimi saxlanılır, render zamanı sanitize olunur (DOMPurify).
+  > Faza 4: DOMPurify əvəzinə kiçik markdown renderer (`client/src/lib/markdown.tsx`) — yalnız React elementləri yaradır, HTML heç vaxt inject olunmur (qalın, kursiv, link `http(s)/mailto`, paraqraf).
 - **CORS:** yalnız `CORS_ORIGINS`-dəki domenlər.
 - **helmet** aktivdir.
 - **Şəbəkə:** MongoDB və MinIO portları xaricə açılmır; yalnız Caddy 80/443 açıqdır. Hetzner firewall-da yalnız 22, 80, 443.

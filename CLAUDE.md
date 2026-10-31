@@ -26,6 +26,10 @@ Domain placeholder: domain.az.
   bg-background, bg-surface, text-fg, bg-primary, text-accent (+ /opacity).
   Type scale: text-display/h1/h2/h3/lead/label; spacing: px-gutter, py-section.
 - Headings support `*word*` = marker highlight (SplitText → Highlight).
+- Admin-written rich text (bio, challenge, solution) renders via lib/markdown.tsx
+  (React elements only, no HTML injection) — never use dangerouslySetInnerHTML.
+- Service icons come from the curated map in lib/icons.ts (admin picks from it).
+- Images: components/ui/Img (WebP srcset + blur placeholder + width/height).
 - Design direction "Signal": docs/design/DIRECTION.md; live style guide at /dev/design (dev only).
 - All translatable content uses LocalizedString { az, en, ru };
   read via useLocalized(). Static UI strings via react-i18next.
@@ -52,6 +56,8 @@ Domain placeholder: domain.az.
 - client: npm run dev | build | lint | format
 - server: npm run start:dev | build | lint | test | test:e2e | format | seed
   - seed: creates admin from ADMIN_EMAIL/ADMIN_PASSWORD + default settings (idempotent)
+  - seed:demo: fills a dev DB with fictional demo content + generated images (skips if projects exist)
+  - NOTE: seed/build run `nest build`, which wipes dist/ — a running start:dev may need a restart
   - test:e2e needs local infra running; uses DB `portfolio_e2e` + bucket `media-e2e`
   - Swagger (non-production): http://localhost:3000/api/docs
 - local infra: docker compose -f deploy/docker-compose.dev.yml up -d

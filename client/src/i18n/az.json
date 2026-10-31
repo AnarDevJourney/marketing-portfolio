@@ -15,8 +15,16 @@
     "testimonials": "Rəylər",
     "contact": "Əlaqə"
   },
-  "menu": { "open": "Menyu", "close": "Bağla", "language": "Dil" },
-  "cursor": { "view": "Bax", "drag": "Sürüşdür", "open": "Aç" },
+  "menu": {
+    "open": "Menyu",
+    "close": "Bağla",
+    "language": "Dil"
+  },
+  "cursor": {
+    "view": "Bax",
+    "drag": "Sürüşdür",
+    "open": "Aç"
+  },
   "common": {
     "scroll": "Aşağı sürüşdür",
     "backToTop": "Yuxarı qayıt",
@@ -36,5 +44,56 @@
   "footer": {
     "rights": "Bütün hüquqlar qorunur",
     "madeWith": "Siqnal, səs-küy yox."
+  },
+  "clients": {
+    "heading": "Etibar edən brendlər"
+  },
+  "about": {
+    "cv": "CV-ni yüklə",
+    "experience": "Təcrübə"
+  },
+  "services": {
+    "heading": "Böyüməni *ölçülə bilən* edirəm"
+  },
+  "work": {
+    "heading": "Seçilmiş *işlər*",
+    "view": "Layihəyə bax",
+    "all": "Bütün layihələr"
+  },
+  "testimonials": {
+    "heading": "Müştərilər *nə* deyir",
+    "prev": "Əvvəlki",
+    "next": "Növbəti"
+  },
+  "contact": {
+    "heading": "Gəlin *birlikdə* işləyək",
+    "lead": "Layihəniz, kampaniyanız və ya sadəcə bir ideyanız var? Yazın, 24 saat ərzində cavab verirəm.",
+    "name": "Adınız",
+    "email": "Email",
+    "phone": "Telefon",
+    "subject": "Mövzu",
+    "message": "Mesaj",
+    "send": "Göndər",
+    "sending": "Göndərilir…",
+    "success": "Mesajınız çatdı!",
+    "successText": "Təşəkkürlər — tezliklə əlaqə saxlayacağam.",
+    "again": "Yeni mesaj",
+    "error": "Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
+    "tooMany": "Çox sayda cəhd. Bir dəqiqə sonra yenidən yoxlayın.",
+    "or": "və ya birbaşa yazın"
+  },
+  "project": {
+    "client": "Müştəri",
+    "year": "İl",
+    "category": "Kateqoriya",
+    "challenge": "Problem",
+    "solution": "Həll",
+    "results": "Nəticələr",
+    "gallery": "Qalereya",
+    "next": "Növbəti layihə",
+    "back": "Bütün işlər",
+    "close": "Bağla",
+    "prev": "Əvvəlki",
+    "nextImage": "Növbəti"
   }
 }

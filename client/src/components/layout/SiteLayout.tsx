@@ -99,6 +99,8 @@ export function SiteLayout() {
       />
     )
   if (!data || !settings) return preloader || null
+  const fromCard =
+    (location.state as { fromCard?: boolean } | null)?.fromCard === true
 
   return (
     <LocaleContext.Provider value={{ locale, defaultLocale, enabled }}>
@@ -106,10 +108,11 @@ export function SiteLayout() {
       {settings.features.customCursor && !isTouch && <Cursor />}
       {preloader}
       <Header settings={settings} sections={data.sections} />
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" custom={fromCard}>
         <PageTransition
           key={stripLocale(location.pathname)}
           label={settings.siteName}
+          skip={fromCard}
         >
           <main>{langValid ? outlet : <NotFoundPage />}</main>
           <Footer settings={settings} />

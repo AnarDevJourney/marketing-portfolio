@@ -1,6 +1,7 @@
 import { AnimatePresence, m, useMotionValue, useSpring } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router'
 
 /**
  * Custom cursor: a small accent dot plus a trailing ring. Over elements with
@@ -13,7 +14,9 @@ export function Cursor() {
   const y = useMotionValue(-100)
   const ringX = useSpring(x, { stiffness: 350, damping: 32, mass: 0.5 })
   const ringY = useSpring(y, { stiffness: 350, damping: 32, mass: 0.5 })
-  const [label, setLabel] = useState<string | null>(null)
+  const { pathname } = useLocation()
+  // remember which page the label belongs to: after navigation it's stale until the mouse moves
+  const [hint, setHint] = useState<{ label: string; path: string } | null>(null)
   const [hovering, setHovering] = useState(false)
   const [visible, setVisible] = useState(false)
 
@@ -26,7 +29,11 @@ export function Cursor() {
       setVisible(true)
       const target = e.target instanceof Element ? e.target : null
       const labelled = target?.closest<HTMLElement>('[data-cursor]')
-      setLabel(labelled?.dataset.cursor ?? null)
+      setHint(
+        labelled?.dataset.cursor
+          ? { label: labelled.dataset.cursor, path: window.location.pathname }
+          : null,
+      )
       setHovering(
         !!target?.closest('a, button, [role="button"], label, summary'),
       )
@@ -41,6 +48,7 @@ export function Cursor() {
     }
   }, [x, y])
 
+  const label = hint?.path === pathname ? hint.label : null
   const text = label ? t(`cursor.${label}`, { defaultValue: label }) : null
 
   return (

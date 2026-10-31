@@ -6,6 +6,17 @@ import { EASE } from '../../lib/motion'
 
 let firstMount = true
 
+interface PageTransitionProps {
+  children: ReactNode
+  label: string
+  /**
+   * Skip the curtain (the page does its own transition, e.g. a work card's
+   * cover growing into the case study). Pass the same value as
+   * <AnimatePresence custom>, so the *exiting* page also sees the latest value.
+   */
+  skip?: boolean
+}
+
 /**
  * Route transition "curtain": on exit a primary-colored panel rises over the
  * old page; the new page mounts underneath and the panel lifts away.
@@ -14,48 +25,60 @@ let firstMount = true
 export function PageTransition({
   children,
   label,
-}: {
-  children: ReactNode
-  label: string
-}) {
+  skip = false,
+}: PageTransitionProps) {
   const reduced = useReducedMotion()
-  const skipIntro = firstMount
+  const showIntro = !firstMount && !skip && !reduced
 
   useEffect(() => {
     firstMount = false
     if (!window.location.hash) scrollToTarget(0, { immediate: true })
   }, [])
 
-  if (reduced) {
-    return (
+  return (
+    <>
       <m.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
+        variants={{
+          shown: { opacity: 1 },
+          exit: (s: boolean) =>
+            s || reduced
+              ? { opacity: 0, transition: { duration: 0.35 } }
+              : // stay visible under the curtain; the duration keeps AnimatePresence waiting for it
+                { opacity: 1, transition: { duration: 0.6 } },
+        }}
+        initial={reduced ? { opacity: 0 } : false}
+        animate="shown"
+        exit="exit"
       >
         {children}
       </m.div>
-    )
-  }
 
-  return (
-    <>
-      {children}
-      {/* covers the old page on exit */}
-      <m.div
-        aria-hidden
-        className="fixed inset-0 z-[75] origin-bottom bg-primary"
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 0 }}
-        exit={{ scaleY: 1 }}
-        transition={{ duration: 0.6, ease: EASE.inOut }}
-      />
-      {/* reveals the new page on enter */}
-      {!skipIntro && (
+      {!reduced && (
+        // covers the old page on exit
         <m.div
           aria-hidden
-          className="fixed inset-0 z-[75] flex origin-top items-center justify-center bg-primary"
+          className="pointer-events-none fixed inset-0 z-[75] origin-bottom bg-primary"
+          variants={{
+            shown: { scaleY: 0 },
+            exit: (s: boolean) =>
+              s
+                ? { scaleY: 0, transition: { duration: 0 } }
+                : {
+                    scaleY: 1,
+                    transition: { duration: 0.6, ease: EASE.inOut },
+                  },
+          }}
+          initial={false}
+          animate="shown"
+          exit="exit"
+        />
+      )}
+
+      {showIntro && (
+        // reveals the new page on enter
+        <m.div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[75] flex origin-top items-center justify-center bg-primary"
           initial={{ scaleY: 1 }}
           animate={{ scaleY: 0 }}
           exit={{ scaleY: 0 }}

@@ -71,5 +71,7 @@ describe('Admin settings (e2e)', () => {
       'javascript url',
       { socials: [{ platform: 'x', url: 'javascript:alert(1)' }] },
     ],
-  ])('rejects %s', (_, body) => patch(body).expect(400));
+  ])('rejects %s', async (_, body) => {
+    await patch(body).expect(400);
+  });
 });

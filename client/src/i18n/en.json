@@ -15,8 +15,16 @@
     "testimonials": "Testimonials",
     "contact": "Contact"
   },
-  "menu": { "open": "Menu", "close": "Close", "language": "Language" },
-  "cursor": { "view": "View", "drag": "Drag", "open": "Open" },
+  "menu": {
+    "open": "Menu",
+    "close": "Close",
+    "language": "Language"
+  },
+  "cursor": {
+    "view": "View",
+    "drag": "Drag",
+    "open": "Open"
+  },
   "common": {
     "scroll": "Scroll down",
     "backToTop": "Back to top",
@@ -36,5 +44,56 @@
   "footer": {
     "rights": "All rights reserved",
     "madeWith": "Signal, not noise."
+  },
+  "clients": {
+    "heading": "Brands that trust me"
+  },
+  "about": {
+    "cv": "Download CV",
+    "experience": "Experience"
+  },
+  "services": {
+    "heading": "Making growth *measurable*"
+  },
+  "work": {
+    "heading": "Selected *work*",
+    "view": "View project",
+    "all": "All projects"
+  },
+  "testimonials": {
+    "heading": "What *clients* say",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "contact": {
+    "heading": "Let's work *together*",
+    "lead": "Have a project, a campaign or just an idea? Write to me — I reply within 24 hours.",
+    "name": "Your name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending…",
+    "success": "Message received!",
+    "successText": "Thank you — I'll get back to you soon.",
+    "again": "New message",
+    "error": "Couldn't send. Please try again in a moment.",
+    "tooMany": "Too many attempts. Please try again in a minute.",
+    "or": "or write directly"
+  },
+  "project": {
+    "client": "Client",
+    "year": "Year",
+    "category": "Category",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "results": "Results",
+    "gallery": "Gallery",
+    "next": "Next project",
+    "back": "All work",
+    "close": "Close",
+    "prev": "Previous",
+    "nextImage": "Next"
   }
 }
