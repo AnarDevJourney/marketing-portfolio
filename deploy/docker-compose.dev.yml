@@ -1,0 +1,30 @@
+# Local infra for development: MongoDB + MinIO.
+# Usage: docker compose -f deploy/docker-compose.dev.yml up -d
+# Ports are bound to 127.0.0.1 only.
+#
+# The official minio/minio image is no longer published on Docker Hub,
+# so we use Chainguard's build. The `media` bucket (public read) is
+# created by the server on startup (Phase 1, media module).
+
+services:
+  mongo:
+    image: mongo:7
+    ports: ['127.0.0.1:27017:27017']
+    volumes: [mongo_data:/data/db]
+    restart: unless-stopped
+
+  minio:
+    image: chainguard/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - '127.0.0.1:9000:9000' # S3 API
+      - '127.0.0.1:9001:9001' # web console
+    volumes: [minio_data:/data]
+    restart: unless-stopped
+
+volumes:
+  mongo_data: {}
+  minio_data: {}
