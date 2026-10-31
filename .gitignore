@@ -10,3 +10,6 @@ coverage/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# original spec (local only; markdown copy lives in docs/SPEC.md)
+Marketing_Portfolio_Spec.pdf

@@ -1,7 +1,7 @@
 # Marketing Portfolio Website — Texniki spesifikasiya
 
 > Texniki spesifikasiya və arxitektura sənədi · v1.0 · 31 oktyabr 2026 · Hazırlayan: Anar Talibov
-> Mənbə: `Marketing_Portfolio_Spec.pdf`
+> Mənbə: orijinal PDF (repoda saxlanılmır)
 
 | | |
 |---|---|

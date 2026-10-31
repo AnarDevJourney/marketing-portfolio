@@ -4,7 +4,7 @@
 Marketing portfolio website for a marketing professional.
 Priority: visual quality, animations, distinct modern UI. Small admin panel.
 Full spec: docs/SPEC.md — read the relevant section before starting a task.
-Original: Marketing_Portfolio_Spec.pdf. Domain placeholder: domain.az.
+Domain placeholder: domain.az.
 
 ## Stack
 - client/: React + Vite + TS, Tailwind v4, Motion, GSAP+ScrollTrigger, Lenis,
