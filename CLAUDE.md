@@ -25,11 +25,19 @@ Domain placeholder: domain.az.
 - Every admin write must invalidate the related public cache keys.
 - DTOs validated with class-validator; global whitelist ValidationPipe.
 - Public endpoints return only published items, sorted by `order`.
-- Server is ESM (`"type": "module"`): relative imports use the `.js` suffix.
+- Server is ESM (`"type": "module"`): relative imports use the `.js` suffix;
+  type-only imports (e.g. mongoose `Connection`) must use `import type`.
+- Module pattern: schema, dto/, service, admin.controller.ts, public.controller.ts.
+  Singletons (settings, hero, about): ensureDefaults() + updateOne({}, {$set}).
+- New fields that reference Media must be added to MEDIA_REFERENCES
+  (server/src/modules/media/media.constants.ts) so in-use deletes are blocked.
 
 ## Commands
 - client: npm run dev | build | lint | format
-- server: npm run start:dev | build | lint | test | test:e2e | format | seed (seed: Phase 1)
+- server: npm run start:dev | build | lint | test | test:e2e | format | seed
+  - seed: creates admin from ADMIN_EMAIL/ADMIN_PASSWORD + default settings (idempotent)
+  - test:e2e needs local infra running; uses DB `portfolio_e2e` + bucket `media-e2e`
+  - Swagger (non-production): http://localhost:3000/api/docs
 - local infra: docker compose -f deploy/docker-compose.dev.yml up -d
   (Mongo :27017, MinIO API :9000, console :9001 — minioadmin/minioadmin)
 
