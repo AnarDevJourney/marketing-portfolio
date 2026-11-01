@@ -30,6 +30,8 @@ services:
 
   mongo:
     image: mongo:7
+    # Shares the 4 GB VPS with TaskFlow's MongoDB: cap the cache (default is ~50% of RAM).
+    command: ['--wiredTigerCacheSizeGB', '0.25']
     volumes: [mongo_data:/data/db]
     restart: unless-stopped
 
