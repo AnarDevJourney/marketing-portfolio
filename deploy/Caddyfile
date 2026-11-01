@@ -1,0 +1,17 @@
+# Domains come from deploy/.env (passed in by docker-compose.yml).
+# Caddy gets and renews the HTTPS certificates automatically once DNS points here.
+{
+	email {$ACME_EMAIL}
+}
+
+{$API_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy api:3000
+}
+
+# Public images/videos/PDFs from the MinIO bucket. File names are unique (uuid),
+# so they can be cached forever.
+{$MEDIA_DOMAIN} {
+	header Cache-Control "public, max-age=31536000, immutable"
+	reverse_proxy minio:9000
+}

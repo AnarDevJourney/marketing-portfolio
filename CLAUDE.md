@@ -77,6 +77,8 @@ Domain placeholder: domain.az.
   - NOTE: seed/build run `nest build`, which wipes dist/ — a running start:dev may need a restart
   - test:e2e needs local infra running; uses DB `portfolio_e2e` + bucket `media-e2e`
   - Swagger (non-production): http://localhost:3000/api/docs
+- deploy: docs/DEPLOY.md — VPS: deploy/docker-compose.yml (+ Caddyfile, .env.example, backup.sh,
+  update.sh), server/Dockerfile; Netlify: netlify.toml (root)
 - local infra: docker compose -f deploy/docker-compose.dev.yml up -d
   (Mongo :27017, MinIO API :9000, console :9001 — minioadmin/minioadmin)
 

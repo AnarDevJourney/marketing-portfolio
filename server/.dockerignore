@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+test
+.env
+.env.*
+!.env.example
+# A stale tsbuildinfo makes `nest build` think dist is up to date and emit nothing.
+*.tsbuildinfo

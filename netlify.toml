@@ -1,0 +1,28 @@
+# Netlify: the public site + admin panel (client/). The API runs on the VPS (deploy/).
+# Set in the Netlify UI (Site configuration → Environment variables):
+#   VITE_API_URL  = https://api.<domain>/api
+#   VITE_SITE_URL = https://<domain>
+
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # scripts/prerender.ts runs with Node's built-in TypeScript type stripping
+  NODE_VERSION = "24"
+  # Fail the build if the API can't be reached instead of shipping pages without SEO
+  PRERENDER_STRICT = "1"
+
+# Hashed build assets never change
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"

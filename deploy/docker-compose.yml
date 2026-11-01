@@ -1,0 +1,60 @@
+# Production stack on the VPS: API + MongoDB + MinIO behind Caddy (automatic HTTPS).
+# The public site itself is on Netlify (see netlify.toml).
+#
+#   cd deploy && cp .env.example .env   # fill in the values
+#   docker compose up -d --build
+#
+# Only Caddy is reachable from outside (80/443). Mongo and MinIO stay on the
+# internal network; the MinIO console listens on 127.0.0.1:9001 for an SSH tunnel:
+#   ssh -L 9001:localhost:9001 user@vps   → http://localhost:9001
+
+name: portfolio
+
+services:
+  api:
+    build: ../server
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGO_URI: mongodb://mongo:27017/portfolio
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+    depends_on: [mongo, minio]
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    volumes: [mongo_data:/data/db]
+    restart: unless-stopped
+
+  minio:
+    # The official minio/minio image is no longer published; Chainguard's build is used.
+    image: chainguard/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:?set MINIO_ACCESS_KEY in deploy/.env}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:?set MINIO_SECRET_KEY in deploy/.env}
+    ports: ['127.0.0.1:9001:9001']
+    volumes: [minio_data:/data]
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports: ['80:80', '443:443', '443:443/udp']
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in deploy/.env}
+      MEDIA_DOMAIN: ${MEDIA_DOMAIN:?set MEDIA_DOMAIN in deploy/.env}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in deploy/.env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api, minio]
+    restart: unless-stopped
+
+volumes:
+  mongo_data: {}
+  minio_data: {}
+  caddy_data: {}
+  caddy_config: {}
