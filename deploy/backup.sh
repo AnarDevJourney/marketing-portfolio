@@ -5,6 +5,8 @@
 # Backups land on the same VPS — also enable Hetzner's server backups (or copy
 # BACKUP_DIR elsewhere) so a lost server doesn't take the backups with it.
 set -euo pipefail
+# Backups contain the admin password hash and all content: owner-only.
+umask 077
 cd "$(dirname "$0")"
 
 BACKUP_DIR="${BACKUP_DIR:-/var/backups/portfolio}"
