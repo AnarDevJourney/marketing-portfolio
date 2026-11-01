@@ -2,7 +2,7 @@
 
 | | Harada | Ünvan (nümunə) |
 |---|---|---|
-| Sayt + admin panel | Netlify (pulsuz subdomen) | `https://sheila-portfolio.netlify.app` (`/admin`) |
+| Sayt + admin panel | Netlify (pulsuz subdomen) | `https://sheyla-portfolio.netlify.app` (`/admin`) |
 | API + media | Hetzner VPS, Docker + host Nginx + Let's Encrypt | `https://sheila-portfolio.duckdns.org/api`, `/media` |
 | Backend domeni | DuckDNS (pulsuz) | `sheila-portfolio.duckdns.org` |
 
@@ -60,13 +60,13 @@ Sertifikat certbot timer-i ilə avtomatik yenilənir (TaskFlow-dakı kimi).
 
 1. app.netlify.com → **Add new site → Import an existing project → GitHub** → `marketing-portfolio`.
    Build ayarları `netlify.toml`-dan gəlir (base `client`, publish `dist`, Node 24).
-2. **Site configuration → Site details → Change site name** → `sheila-portfolio`
+2. **Site configuration → Site details → Change site name** → `sheyla-portfolio`
    (`CORS_ORIGINS`-dəki adla eyni olmalıdır).
 3. **Site configuration → Environment variables:**
    - `VITE_API_URL` = `https://sheila-portfolio.duckdns.org/api`
-   - `VITE_SITE_URL` = `https://sheila-portfolio.netlify.app`
+   - `VITE_SITE_URL` = `https://sheyla-portfolio.netlify.app`
 4. **Deploys → Trigger deploy**. Build log-da `✓ prerendered N pages` görünməlidir.
-5. `https://sheila-portfolio.netlify.app/admin` → seed-dəki admin ilə giriş → şifrəni dəyiş.
+5. `https://sheyla-portfolio.netlify.app/admin` → seed-dəki admin ilə giriş → şifrəni dəyiş.
 
 ## 5. Build hook (admin dəyişikliklərindən sonra avtomatik rebuild)
 
