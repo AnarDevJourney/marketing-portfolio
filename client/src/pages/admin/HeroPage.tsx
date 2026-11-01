@@ -17,6 +17,7 @@ import { lsRequired } from '../../admin/rules'
 import { LocalizedInput } from '../../components/admin/LocalizedInput'
 import { MediaPicker } from '../../components/admin/MediaPicker'
 import { PageHeader } from '../../components/admin/PageHeader'
+import { SectionVisibility } from '../../components/admin/SectionVisibility'
 import { useUnsavedChanges } from '../../components/admin/useUnsavedChanges'
 
 export const HIGHLIGHT_HINT =
@@ -70,6 +71,7 @@ export default function HeroPage() {
           </Button>
         }
       />
+      <SectionVisibility section="hero" name="Hero" />
       <Form
         form={form}
         layout="vertical"

@@ -8,6 +8,7 @@ import { Metric, MetricSchema } from '../../common/schemas/metric.schema.js';
 
 const mediaRef = { type: SchemaTypes.ObjectId, ref: 'Media', default: null };
 
+/** Shared by `timeline` (experience) and `education`. For education: title = degree, company = school. */
 @Schema({ _id: false })
 export class TimelineEntry {
   @Prop({ required: true }) period: string;
@@ -39,6 +40,13 @@ export class About {
   @Prop({ type: [SchemaFactory.createForClass(TimelineEntry)], default: [] })
   timeline: TimelineEntry[];
 
+  /** Shown next to the experience timeline with the same design. */
+  @Prop({ type: [SchemaFactory.createForClass(TimelineEntry)], default: [] })
+  education: TimelineEntry[];
+
+  /** Show/hide the experience + education block (the rest of About stays). */
+  @Prop({ default: true }) careerVisible: boolean;
+
   /** CV as PDF. */
   @Prop(mediaRef) cv?: Types.ObjectId | null;
 }
@@ -50,4 +58,6 @@ export const DEFAULT_ABOUT = {
   bio: { az: '', en: '', ru: '' },
   stats: [],
   timeline: [],
+  education: [],
+  careerVisible: true,
 };

@@ -5,6 +5,7 @@ import {
   IsArray,
   IsBoolean,
   IsDefined,
+  IsIn,
   IsInt,
   IsMongoId,
   IsOptional,
@@ -17,6 +18,7 @@ import {
 } from 'class-validator';
 import { LocalizedStringDto } from '../../../common/dto/localized-string.dto.js';
 import { MetricDto } from '../../../common/dto/metric.dto.js';
+import { PROJECT_GROUPS, type ProjectGroup } from '../project.schema.js';
 
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -99,6 +101,8 @@ export class CreateProjectDto {
   @IsString({ each: true })
   @MaxLength(40, { each: true })
   tags?: string[];
+
+  @IsOptional() @IsIn(PROJECT_GROUPS) group?: ProjectGroup;
 
   @IsOptional() @IsBoolean() featured?: boolean;
   @IsOptional() @IsBoolean() published?: boolean;

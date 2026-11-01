@@ -38,6 +38,21 @@ describe('Admin settings (e2e)', () => {
       enabled: ['az', 'en', 'ru'],
     });
     expect(body.logo).toBeNull();
+    expect(body.workGroups.enabled).toBe(true);
+    expect(body.workGroups.secondary.az).toBe('Event menecer kimi');
+  });
+
+  it('saves work group titles; both titles are required', async () => {
+    const workGroups = {
+      enabled: false,
+      primary: { az: 'A', en: 'A', ru: 'A' },
+      secondary: { az: 'B', en: 'B', ru: 'B' },
+    };
+    const { body } = await patch({ workGroups }).expect(200);
+    expect(body.workGroups).toEqual(workGroups);
+    await patch({
+      workGroups: { enabled: true, primary: workGroups.primary },
+    }).expect(400);
   });
 
   it('updates only the fields that are sent', async () => {

@@ -17,7 +17,7 @@ import { scrollToTarget } from '../../lib/lenis'
 import { plainText } from '../../lib/localized'
 import { renderMarkdown } from '../../lib/markdown'
 import { EASE } from '../../lib/motion'
-import { takeCoverOrigin } from '../../lib/shared-cover'
+import { clearCoverOrigin, getCoverOrigin } from '../../lib/shared-cover'
 import NotFoundPage from './NotFoundPage'
 
 export default function ProjectPage() {
@@ -40,9 +40,12 @@ function ProjectView({ project }: { project: ProjectDetail }) {
 
   // Cover "grows" from the work card that was clicked (FLIP: transform only).
   useLayoutEffect(() => {
-    const from = takeCoverOrigin()
+    const from = getCoverOrigin()
     const el = coverRef.current
-    if (!from || !el || reduced) return
+    if (!from || !el || reduced) {
+      clearCoverOrigin()
+      return
+    }
     scrollToTarget(0, { immediate: true })
     window.scrollTo(0, 0)
     const to = el.getBoundingClientRect()
@@ -55,9 +58,15 @@ function ProjectView({ project }: { project: ProjectDetail }) {
         scaleX: [from.width / to.width, 1],
         scaleY: [from.height / to.height, 1],
       },
-      { duration: 1, ease: EASE.outExpo },
+      { duration: 1, ease: EASE.outExpo, onComplete: clearCoverOrigin },
     )
-    return () => controls.stop()
+    // An interrupted run (StrictMode re-run, unmount) must not leave the cover
+    // frozen at the card's position: stop and drop the inline transform.
+    return () => {
+      controls.stop()
+      el.style.transform = ''
+      el.style.transformOrigin = ''
+    }
   }, [reduced])
 
   useEffect(() => {

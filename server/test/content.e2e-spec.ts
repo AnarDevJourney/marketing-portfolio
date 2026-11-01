@@ -23,9 +23,8 @@ describe('Hero, about and bootstrap (e2e)', () => {
     expect(body.settings.siteName).toBe('Portfolio');
     expect(body.hero.title.en).toBeTruthy();
     expect(body.about.heading.en).toBe('About me');
+    // hero + clients are hidden by default (DEFAULT_SETTINGS).
     expect(body.sections).toEqual([
-      'hero',
-      'clients',
       'about',
       'services',
       'work',
@@ -69,7 +68,7 @@ describe('Hero, about and bootstrap (e2e)', () => {
     expect(boot.body.hero.background.media.url).toBe(image.url);
   });
 
-  it('about: saves stats and timeline, CV must be a PDF', async () => {
+  it('about: saves stats, timeline and education, CV must be a PDF', async () => {
     const photo = await c.uploadImage();
     const about = {
       photo: photo._id,
@@ -78,6 +77,9 @@ describe('Hero, about and bootstrap (e2e)', () => {
       stats: [{ value: 8, suffix: '+', label: ls('Years') }],
       timeline: [
         { period: '2020 — 2024', title: ls('Head of SMM'), company: 'Agency' },
+      ],
+      education: [
+        { period: '2012 — 2016', title: ls('BBA, Marketing'), company: 'UNEC' },
       ],
     };
     await c
@@ -95,11 +97,28 @@ describe('Hero, about and bootstrap (e2e)', () => {
       .send({ ...about, cv: pdf._id })
       .expect(200);
     expect(body.stats).toEqual(about.stats);
+    expect(body.education).toEqual(about.education);
     expect(body.cv.url).toBe(pdf.url);
     expect(body.photo.url).toBe(photo.url);
 
     const boot = await c.http().get('/api/public/bootstrap');
     expect(boot.body.about.heading).toEqual(ls('About'));
+    expect(boot.body.about.education).toEqual(about.education);
+
+    // Older clients that omit `education` clear it instead of failing.
+    const { education: _omit, ...withoutEducation } = about;
+    const { body: cleared } = await c
+      .auth(c.http().put('/api/admin/about'))
+      .send({ ...withoutEducation, cv: pdf._id })
+      .expect(200);
+    expect(cleared.education).toEqual([]);
+    expect(cleared.careerVisible).toBe(true);
+
+    const { body: hidden } = await c
+      .auth(c.http().put('/api/admin/about'))
+      .send({ ...about, cv: pdf._id, careerVisible: false })
+      .expect(200);
+    expect(hidden.careerVisible).toBe(false);
   });
 
   it('bootstrap hides disabled sections after a settings change', async () => {
@@ -110,7 +129,7 @@ describe('Hero, about and bootstrap (e2e)', () => {
       (s: { key: string; order: number }) => ({
         key: s.key,
         order: s.key === 'contact' ? 0 : s.order + 1,
-        enabled: s.key !== 'clients',
+        enabled: s.key !== 'services',
       }),
     );
     await c
@@ -120,7 +139,7 @@ describe('Hero, about and bootstrap (e2e)', () => {
 
     const boot = await c.http().get('/api/public/bootstrap');
     expect(boot.body.sections[0]).toBe('contact');
-    expect(boot.body.sections).not.toContain('clients');
+    expect(boot.body.sections).not.toContain('services');
   });
 
   it('media used by hero/about cannot be deleted', async () => {

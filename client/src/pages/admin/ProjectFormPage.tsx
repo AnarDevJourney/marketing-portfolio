@@ -30,6 +30,7 @@ import {
 } from '../../components/admin/MediaPicker'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { useUnsavedChanges } from '../../components/admin/useUnsavedChanges'
+import { useWorkGroupOptions } from '../../admin/workGroups'
 import { MARKDOWN_HINT, MetricFields } from './AboutPage'
 
 const EMPTY: Partial<AdminProject> = {
@@ -45,6 +46,7 @@ const EMPTY: Partial<AdminProject> = {
   gallery: [],
   tags: [],
   featured: false,
+  group: 'primary',
   published: false,
 }
 
@@ -57,6 +59,7 @@ export default function ProjectFormPage() {
 
 function ProjectForm({ project }: { project?: AdminProject }) {
   const { message } = App.useApp()
+  const groups = useWorkGroupOptions()
   const navigate = useNavigate()
   const [form] = Form.useForm<AdminProject>()
   const [dirty, setDirty] = useState(false)
@@ -293,10 +296,20 @@ function ProjectForm({ project }: { project?: AdminProject }) {
                 name="featured"
                 label="Ana səhifədə seçilmiş"
                 valuePropName="checked"
-                style={{ marginBottom: 0 }}
+                style={groups.enabled ? undefined : { marginBottom: 0 }}
               >
                 <Switch />
               </Form.Item>
+              {groups.enabled && (
+                <Form.Item
+                  name="group"
+                  label="Qrup"
+                  extra="Saytda bu iş hansı düymənin altında görünsün."
+                  style={{ marginBottom: 0 }}
+                >
+                  <Select options={groups.options} />
+                </Form.Item>
+              )}
             </Card>
             <Card title="Şəkillər" style={{ marginBottom: 16 }}>
               <Form.Item

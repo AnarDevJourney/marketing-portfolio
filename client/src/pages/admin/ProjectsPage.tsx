@@ -1,5 +1,14 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
-import { App, Button, Flex, Popconfirm, Switch, Tag, Typography } from 'antd'
+import {
+  App,
+  Button,
+  Flex,
+  Popconfirm,
+  Select,
+  Switch,
+  Tag,
+  Typography,
+} from 'antd'
 import { Link } from 'react-router'
 import type { AdminProject } from '../../admin/types'
 import { errorMessage } from '../../admin/utils'
@@ -11,7 +20,10 @@ import {
 } from '../../api/adminApi'
 import { MediaThumb } from '../../components/admin/MediaThumb'
 import { PageHeader } from '../../components/admin/PageHeader'
+import { SectionVisibility } from '../../components/admin/SectionVisibility'
 import { SortableTable } from '../../components/admin/SortableTable'
+import { useWorkGroupOptions } from '../../admin/workGroups'
+import { WorkGroupsCard } from '../../components/admin/WorkGroups'
 
 export default function ProjectsPage() {
   const { message } = App.useApp()
@@ -19,11 +31,12 @@ export default function ProjectsPage() {
   const [update] = useUpdateProjectMutation()
   const [remove] = useDeleteProjectMutation()
   const [reorder] = useReorderProjectsMutation()
+  const groups = useWorkGroupOptions()
 
   const toggle = async (
     p: AdminProject,
-    field: 'published' | 'featured',
-    value: boolean,
+    field: 'published' | 'featured' | 'group',
+    value: boolean | string,
   ) => {
     try {
       await update({ id: p._id, body: { [field]: value } }).unwrap()
@@ -46,6 +59,8 @@ export default function ProjectsPage() {
           </Link>
         }
       />
+      <SectionVisibility section="work" name="İşlər" />
+      <WorkGroupsCard />
       <SortableTable<AdminProject>
         data={data}
         loading={isLoading}
@@ -79,6 +94,25 @@ export default function ProjectsPage() {
             key: 'category',
             render: (_, p) => <Tag>{p.category.az}</Tag>,
           },
+          ...(groups.enabled
+            ? [
+                {
+                  title: 'Qrup',
+                  key: 'group',
+                  width: 200,
+                  render: (_: unknown, p: AdminProject) => (
+                    <Select
+                      size="small"
+                      value={p.group ?? 'primary'}
+                      options={groups.options}
+                      onChange={(v) => toggle(p, 'group', v)}
+                      style={{ width: '100%' }}
+                      popupMatchSelectWidth={false}
+                    />
+                  ),
+                },
+              ]
+            : []),
           {
             title: 'Seçilmiş',
             key: 'featured',

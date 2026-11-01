@@ -61,6 +61,12 @@ export interface Settings {
   }
   locales: { default: Locale; enabled: Locale[] }
   features: { customCursor: boolean; preloader: boolean; smoothScroll: boolean }
+  /** Work section split into two tabs (projects pick one via `group`). */
+  workGroups: {
+    enabled: boolean
+    primary: LocalizedString
+    secondary: LocalizedString
+  }
 }
 
 export interface Hero {
@@ -76,17 +82,23 @@ export interface Hero {
   }
 }
 
+export interface TimelineEntry {
+  period: string
+  title: LocalizedString
+  company: string
+  description?: LocalizedString
+}
+
 export interface About {
   photo: Media | null
   heading: LocalizedString
   bio: LocalizedString
   stats: Metric[]
-  timeline: {
-    period: string
-    title: LocalizedString
-    company: string
-    description?: LocalizedString
-  }[]
+  timeline: TimelineEntry[]
+  /** Same shape as timeline: title = degree, company = school. */
+  education: TimelineEntry[]
+  /** Show/hide the experience + education block. */
+  careerVisible: boolean
   cv: Media | null
 }
 
@@ -96,6 +108,9 @@ export interface Bootstrap {
   about: About
   sections: SectionKey[]
 }
+
+export type ProjectGroup = 'primary' | 'secondary'
+export const PROJECT_GROUPS: ProjectGroup[] = ['primary', 'secondary']
 
 export interface ProjectCard {
   _id: string
@@ -109,6 +124,7 @@ export interface ProjectCard {
   coverVideo: Media | null
   tags: string[]
   featured: boolean
+  group: ProjectGroup
 }
 
 export interface ProjectDetail extends ProjectCard {

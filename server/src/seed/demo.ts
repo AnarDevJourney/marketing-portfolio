@@ -172,6 +172,26 @@ async function seedDemo() {
           title: ls('Kontent menecer', 'Content manager', 'Контент-менеджер'),
         },
       ],
+      education: [
+        {
+          period: '2013 — 2015',
+          company: 'UNEC',
+          title: ls(
+            'Magistr, marketinq',
+            'MSc, Marketing',
+            'Магистр, маркетинг',
+          ),
+        },
+        {
+          period: '2009 — 2013',
+          company: 'ADA University',
+          title: ls(
+            'Bakalavr, biznesin idarə edilməsi',
+            'BBA, Business Administration',
+            'Бакалавр, управление бизнесом',
+          ),
+        },
+      ],
     });
 
     // Services
@@ -315,6 +335,7 @@ async function seedDemo() {
       },
       {
         slug: 'caspian-run-club',
+        group: 'secondary' as const,
         client: 'Caspian Run Club',
         year: 2024,
         featured: true,
@@ -359,6 +380,7 @@ async function seedDemo() {
       },
       {
         slug: 'velora-creators',
+        group: 'secondary' as const,
         client: 'Velora Skincare',
         year: 2024,
         featured: true,
@@ -414,6 +436,7 @@ async function seedDemo() {
       }
       await projects.create({
         slug: p.slug,
+        group: 'group' in p ? p.group : 'primary',
         title: p.title,
         client: p.client,
         category: p.category,

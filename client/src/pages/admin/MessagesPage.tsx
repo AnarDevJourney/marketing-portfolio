@@ -19,6 +19,7 @@ import {
   useUpdateMessageMutation,
 } from '../../api/adminApi'
 import { PageHeader } from '../../components/admin/PageHeader'
+import { SectionVisibility } from '../../components/admin/SectionVisibility'
 
 export default function MessagesPage() {
   const { message } = App.useApp()
@@ -41,6 +42,7 @@ export default function MessagesPage() {
         description="Kontakt formasından gələn mesajlar."
         sitePath="/#contact"
       />
+      <SectionVisibility section="contact" name="Əlaqə" />
       <Segmented
         style={{ marginBottom: 16 }}
         value={filter}

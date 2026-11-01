@@ -12,6 +12,10 @@ export class ProjectSeo {
   @Prop({ type: LocalizedStringSchema }) description?: LocalizedString;
 }
 
+/** Case studies can be split into two groups (titles in settings.workGroups). */
+export const PROJECT_GROUPS = ['primary', 'secondary'] as const;
+export type ProjectGroup = (typeof PROJECT_GROUPS)[number];
+
 /** A case study. */
 @Schema({ collection: 'projects', timestamps: true })
 export class Project {
@@ -55,6 +59,9 @@ export class Project {
 
   @Prop({ type: [String], default: [] })
   tags: string[];
+
+  @Prop({ type: String, enum: PROJECT_GROUPS, default: 'primary' })
+  group: ProjectGroup;
 
   @Prop({ default: false }) featured: boolean;
   @Prop({ default: false }) published: boolean;

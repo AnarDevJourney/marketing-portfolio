@@ -112,6 +112,32 @@ describe('Projects (e2e)', () => {
       .expect(400);
   });
 
+  it('group: shown on cards; next stays within the group (falls back to all)', async () => {
+    // Order now: gamma, alpha, beta (all 'primary' by default).
+    await c
+      .auth(c.http().patch(`/api/admin/projects/${ids.gamma}`))
+      .send({ group: 'secondary' })
+      .expect(200);
+    await c
+      .auth(c.http().patch(`/api/admin/projects/${ids.alpha}`))
+      .send({ group: 'events' })
+      .expect(400);
+
+    const { body: cards } = await c.http().get('/api/public/projects');
+    expect(
+      cards.map((p: { slug: string; group: string }) => [p.slug, p.group]),
+    ).toEqual([
+      ['gamma', 'secondary'],
+      ['alpha', 'primary'],
+      ['beta', 'primary'],
+    ]);
+
+    const beta = await c.http().get('/api/public/projects/beta');
+    expect(beta.body.next.slug).toBe('alpha'); // skips gamma (other group)
+    const gamma = await c.http().get('/api/public/projects/gamma');
+    expect(gamma.body.next.slug).toBe('alpha'); // alone in its group → all
+  });
+
   it('publishing and slug changes show up immediately', async () => {
     await c
       .auth(c.http().patch(`/api/admin/projects/${ids.draft}`))

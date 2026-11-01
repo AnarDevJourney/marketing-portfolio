@@ -45,6 +45,8 @@ export type SectionKey = (typeof SECTION_KEYS)[number];
 export const HEX_COLOR = /^#[0-9a-f]{6}$/i;
 
 /** Values written on first start / seed. */
+const DEFAULT_HIDDEN_SECTIONS: readonly SectionKey[] = ['hero', 'clients'];
+
 export const DEFAULT_SETTINGS = {
   siteName: 'Portfolio',
   // "Signal" palette — see docs/design/DIRECTION.md.
@@ -65,11 +67,29 @@ export const DEFAULT_SETTINGS = {
       ru: 'Баку, Азербайджан',
     },
   },
-  sections: SECTION_KEYS.map((key, order) => ({ key, enabled: true, order })),
+  // Hero and clients start hidden (client request 2026-11-01); the admin can turn them on.
+  sections: SECTION_KEYS.map((key, order) => ({
+    key,
+    enabled: !DEFAULT_HIDDEN_SECTIONS.includes(key),
+    order,
+  })),
   seo: {
     title: { az: 'Portfolio', en: 'Portfolio', ru: 'Портфолио' },
     description: { az: '', en: '', ru: '' },
   },
   locales: { default: 'az' as Locale, enabled: ['az', 'en', 'ru'] as Locale[] },
   features: { customCursor: true, preloader: true, smoothScroll: true },
+  workGroups: {
+    enabled: true,
+    primary: {
+      az: 'Marketoloq kimi',
+      en: 'As a marketer',
+      ru: 'Как маркетолог',
+    },
+    secondary: {
+      az: 'Event menecer kimi',
+      en: 'As an event manager',
+      ru: 'Как ивент-менеджер',
+    },
+  },
 };

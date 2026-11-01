@@ -2,6 +2,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsDefined,
   IsMongoId,
   IsOptional,
@@ -57,6 +58,17 @@ export class UpdateAboutDto {
   @ValidateNested({ each: true })
   @Type(() => TimelineEntryDto)
   timeline: TimelineEntryDto[];
+
+  /** Same shape as timeline (title = degree, company = school). Omitted → cleared. */
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(30)
+  @ValidateNested({ each: true })
+  @Type(() => TimelineEntryDto)
+  education?: TimelineEntryDto[];
+
+  /** Omitted → true. */
+  @IsOptional() @IsBoolean() careerVisible?: boolean;
 
   @IsOptional() @IsMongoId() cv?: string | null;
 }

@@ -22,11 +22,16 @@ export class SettingsService {
   /** The settings document with media references populated. */
   async get() {
     await this.ensureDefaults();
-    return this.settings
+    const settings = await this.settings
       .findOne()
       .populate(populateMedia(...MEDIA_PATHS))
       .lean()
       .orFail();
+    // Documents created before `workGroups` existed.
+    return {
+      ...settings,
+      workGroups: settings.workGroups ?? DEFAULT_SETTINGS.workGroups,
+    };
   }
 
   async update(dto: UpdateSettingsDto) {

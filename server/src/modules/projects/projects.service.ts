@@ -11,7 +11,7 @@ import { Project } from './project.schema.js';
 
 /** Fields shown on project cards. */
 const CARD_FIELDS =
-  'slug title client category year summary cover coverVideo tags featured';
+  'slug title client category year summary cover coverVideo tags featured group';
 
 @Injectable()
 export class ProjectsService extends OrderedCrudService<
@@ -43,7 +43,10 @@ export class ProjectsService extends OrderedCrudService<
     );
   }
 
-  /** Published case study by slug, plus the next one in order (wraps around). */
+  /**
+   * Published case study by slug, plus the next one in order (wraps around) —
+   * within the same group, or among all projects if the group has no other.
+   */
   findBySlug(slug: string) {
     return this.cache.wrap(CACHE_KEYS.project(slug), async () => {
       const project = await this.model
@@ -53,7 +56,10 @@ export class ProjectsService extends OrderedCrudService<
         .lean<Project & { _id: Types.ObjectId }>();
       if (!project) throw new NotFoundException('Project not found');
 
-      const cards = await this.findCards();
+      const all = await this.findCards();
+      const groupOf = (p: { group?: string }) => p.group ?? 'primary';
+      const sameGroup = all.filter((c) => groupOf(c) === groupOf(project));
+      const cards = sameGroup.length > 1 ? sameGroup : all;
       const i = cards.findIndex((c) => c._id.equals(project._id));
       const next = cards.length > 1 ? cards[(i + 1) % cards.length] : null;
       return { ...project, next };

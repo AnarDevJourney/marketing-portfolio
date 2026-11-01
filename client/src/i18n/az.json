@@ -50,7 +50,8 @@
   },
   "about": {
     "cv": "CV-ni yüklə",
-    "experience": "Təcrübə"
+    "experience": "Təcrübə",
+    "education": "Təhsil"
   },
   "services": {
     "heading": "Böyüməni *ölçülə bilən* edirəm"
@@ -58,7 +59,8 @@
   "work": {
     "heading": "Seçilmiş *işlər*",
     "view": "Layihəyə bax",
-    "all": "Bütün layihələr"
+    "all": "Bütün layihələr",
+    "groups": "İş qrupları"
   },
   "testimonials": {
     "heading": "Müştərilər *nə* deyir",

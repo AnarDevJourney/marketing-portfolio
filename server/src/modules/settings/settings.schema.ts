@@ -89,6 +89,18 @@ export class Features {
   @Prop({ required: true }) smoothScroll: boolean;
 }
 
+/** Splits the Work section into two tabs; projects pick one via `group`. */
+@Schema({ _id: false })
+export class WorkGroups {
+  @Prop({ required: true }) enabled: boolean;
+
+  @Prop({ type: LocalizedStringSchema, required: true })
+  primary: LocalizedString;
+
+  @Prop({ type: LocalizedStringSchema, required: true })
+  secondary: LocalizedString;
+}
+
 /** Singleton: exactly one document, created on first start / seed. */
 @Schema({ collection: 'settings', timestamps: true })
 export class Settings {
@@ -121,6 +133,9 @@ export class Settings {
 
   @Prop({ type: SchemaFactory.createForClass(Features), required: true })
   features: Features;
+
+  @Prop({ type: SchemaFactory.createForClass(WorkGroups) })
+  workGroups?: WorkGroups;
 }
 
 export const SettingsSchema = SchemaFactory.createForClass(Settings);

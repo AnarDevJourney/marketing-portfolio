@@ -7,6 +7,7 @@ import { adminStore } from '../../admin/store'
 import { AdminLayout, RequireAuth } from './AdminLayout'
 import AboutPage from './AboutPage'
 import AccountPage from './AccountPage'
+import CareerPage from './CareerPage'
 import { ClientsPage, ServicesPage, TestimonialsPage } from './CollectionPages'
 import DashboardPage from './DashboardPage'
 import HeroPage from './HeroPage'
@@ -62,6 +63,7 @@ export default function AdminApp() {
               <Route index element={<DashboardPage />} />
               <Route path="hero" element={<HeroPage />} />
               <Route path="about" element={<AboutPage />} />
+              <Route path="career" element={<CareerPage />} />
               <Route path="projects" element={<ProjectsPage />} />
               <Route path="projects/new" element={<ProjectFormPage />} />
               <Route path="projects/:id" element={<ProjectFormPage />} />

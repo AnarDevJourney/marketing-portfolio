@@ -8,6 +8,7 @@ import {
   MailOutlined,
   OrderedListOutlined,
   ProjectOutlined,
+  ReadOutlined,
   SettingOutlined,
   StarOutlined,
   TeamOutlined,
@@ -65,6 +66,11 @@ export function AdminLayout() {
           key: '/admin/about',
           icon: <UserOutlined />,
           label: link('/admin/about', 'Haqqımda'),
+        },
+        {
+          key: '/admin/career',
+          icon: <ReadOutlined />,
+          label: link('/admin/career', 'Təcrübə və təhsil'),
         },
         {
           key: '/admin/projects',
@@ -132,6 +138,7 @@ export function AdminLayout() {
       '/admin/projects',
       '/admin/hero',
       '/admin/about',
+      '/admin/career',
       '/admin/services',
       '/admin/clients',
       '/admin/testimonials',

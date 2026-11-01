@@ -109,6 +109,20 @@ export class FeaturesDto {
   @IsBoolean() smoothScroll: boolean;
 }
 
+export class WorkGroupsDto {
+  @IsBoolean() enabled: boolean;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  primary: LocalizedStringDto;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  secondary: LocalizedStringDto;
+}
+
 /**
  * PATCH body: every top-level field is optional; a field that is sent
  * replaces the stored value as a whole. Media fields accept null to clear.
@@ -166,4 +180,9 @@ export class UpdateSettingsDto {
   @ValidateNested()
   @Type(() => FeaturesDto)
   features?: FeaturesDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => WorkGroupsDto)
+  workGroups?: WorkGroupsDto;
 }

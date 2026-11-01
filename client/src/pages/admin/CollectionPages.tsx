@@ -19,6 +19,7 @@ import type {
   AdminTestimonial,
   Orderable,
 } from '../../admin/types'
+import type { SectionKey } from '../../api/types'
 import { emptyLs, errorMessage, toId } from '../../admin/utils'
 import {
   useCreateClientMutation,
@@ -43,6 +44,7 @@ import { LocalizedInput } from '../../components/admin/LocalizedInput'
 import { MediaPicker } from '../../components/admin/MediaPicker'
 import { MediaThumb } from '../../components/admin/MediaThumb'
 import { PageHeader } from '../../components/admin/PageHeader'
+import { SectionVisibility } from '../../components/admin/SectionVisibility'
 import { SortableTable } from '../../components/admin/SortableTable'
 
 type Body = Record<string, unknown>
@@ -63,6 +65,8 @@ interface CollectionConfig<T extends Orderable> {
   defaults: Partial<T>
   /** Form values -> API body (e.g. media objects -> ids). */
   toBody?: (values: T) => Body
+  /** Home-page section this collection feeds: shows a show/hide switch for the whole section. */
+  section?: SectionKey
 }
 
 /** Shared page for small sortable collections: table with drag-sort + published switch, drawer form. */
@@ -114,6 +118,9 @@ function CollectionPage<T extends Orderable>(cfg: CollectionConfig<T>) {
           </Button>
         }
       />
+      {cfg.section && (
+        <SectionVisibility section={cfg.section} name={cfg.title} />
+      )}
       <SortableTable<T>
         data={cfg.list.data ?? []}
         loading={cfg.list.isLoading}
@@ -222,6 +229,7 @@ export function ClientsPage() {
   return (
     <CollectionPage<AdminClient>
       title="Müştərilər"
+      section="clients"
       description="Loqolar ana səhifədə sonsuz sırada axır. Şəffaf fonlu, açıq rəngli loqolar ən yaxşı görünür."
       sitePath="/#clients"
       itemName="Müştəri"
@@ -294,6 +302,7 @@ export function TestimonialsPage() {
   return (
     <CollectionPage<AdminTestimonial>
       title="Rəylər"
+      section="testimonials"
       description="Müştəri sitatları ana səhifədə slider kimi göstərilir."
       sitePath="/#testimonials"
       itemName="Rəy"
@@ -389,6 +398,7 @@ export function ServicesPage() {
       title="Xidmətlər"
       description="Ana səhifədəki xidmət kartları."
       sitePath="/#services"
+      section="services"
       itemName="Xidmət"
       list={useListServicesQuery()}
       create={create}

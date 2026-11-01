@@ -1,7 +1,7 @@
 import { m, useScroll, useSpring } from 'motion/react'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { About as AboutData } from '../../api/types'
+import type { About as AboutData, TimelineEntry } from '../../api/types'
 import { useLocalized } from '../../hooks/useLocale'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { renderMarkdown } from '../../lib/markdown'
@@ -16,14 +16,9 @@ import { SectionHeading } from './SectionHeading'
 export function About({ about, index }: { about: AboutData; index: number }) {
   const { t } = useTranslation()
   const l = useLocalized()
-  const reduced = useReducedMotion()
-  const timelineRef = useRef<HTMLOListElement>(null)
-  // The timeline's line is drawn as you scroll through it.
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 75%', 'end 60%'],
-  })
-  const lineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
+  // The whole block can be hidden from the admin ("Təcrübə və təhsil" page).
+  const experience = about.careerVisible === false ? [] : about.timeline
+  const education = about.careerVisible === false ? [] : (about.education ?? [])
 
   return (
     <section id="about" className="py-section">
@@ -84,43 +79,64 @@ export function About({ about, index }: { about: AboutData; index: number }) {
           </div>
         </div>
 
-        {about.timeline.length > 0 && (
-          <div className="mt-section grid gap-10 md:grid-cols-12">
-            <h3 className="text-label text-fg/60 md:col-span-4">
-              {t('about.experience')}
-            </h3>
-            <ol ref={timelineRef} className="relative md:col-span-8">
-              <span
-                className="absolute top-0 left-0 h-full w-px bg-fg/10"
-                aria-hidden
-              />
-              <m.span
-                className="absolute top-0 left-0 h-full w-px origin-top bg-primary"
-                style={{ scaleY: reduced ? 1 : lineScale }}
-                aria-hidden
-              />
-              {about.timeline.map((item, i) => (
-                <li key={i} className="relative pb-12 pl-10 last:pb-0">
-                  <span
-                    className="absolute top-2 -left-[3.5px] size-2 rounded-full bg-primary"
-                    aria-hidden
-                  />
-                  <Reveal>
-                    <p className="text-label text-fg/50">{item.period}</p>
-                    <p className="mt-3 font-heading text-h3">{l(item.title)}</p>
-                    <p className="mt-1 text-fg/60">{item.company}</p>
-                    {l(item.description) && (
-                      <p className="mt-3 max-w-xl text-fg/60">
-                        {l(item.description)}
-                      </p>
-                    )}
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
+        {(experience.length > 0 || education.length > 0) && (
+          <div className="mt-section grid gap-20 lg:grid-cols-2 lg:gap-10">
+            {experience.length > 0 && (
+              <Timeline label={t('about.experience')} items={experience} />
+            )}
+            {education.length > 0 && (
+              <Timeline label={t('about.education')} items={education} />
+            )}
           </div>
         )}
       </Container>
     </section>
+  )
+}
+
+/** Label + vertical timeline whose line is drawn as you scroll (experience, education). */
+function Timeline({ label, items }: { label: string; items: TimelineEntry[] }) {
+  const l = useLocalized()
+  const reduced = useReducedMotion()
+  const ref = useRef<HTMLOListElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 75%', 'end 60%'],
+  })
+  const lineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
+
+  return (
+    <div>
+      <h3 className="mb-10 text-label text-fg/60">{label}</h3>
+      <ol ref={ref} className="relative">
+        <span
+          className="absolute top-0 left-0 h-full w-px bg-fg/10"
+          aria-hidden
+        />
+        <m.span
+          className="absolute top-0 left-0 h-full w-px origin-top bg-primary"
+          style={{ scaleY: reduced ? 1 : lineScale }}
+          aria-hidden
+        />
+        {items.map((item, i) => (
+          <li key={i} className="relative pb-12 pl-10 last:pb-0">
+            <span
+              className="absolute top-2 -left-[3.5px] size-2 rounded-full bg-primary"
+              aria-hidden
+            />
+            <Reveal>
+              <p className="text-label text-fg/50">{item.period}</p>
+              <p className="mt-3 font-heading text-h3">{l(item.title)}</p>
+              <p className="mt-1 text-fg/60">{item.company}</p>
+              {item.description && l(item.description) && (
+                <p className="mt-3 max-w-xl text-fg/60">
+                  {l(item.description)}
+                </p>
+              )}
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+    </div>
   )
 }

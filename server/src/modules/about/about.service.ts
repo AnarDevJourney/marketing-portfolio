@@ -22,11 +22,17 @@ export class AboutService {
       { $setOnInsert: DEFAULT_ABOUT },
       { upsert: true },
     );
-    return this.about
+    const about = await this.about
       .findOne()
       .populate(populateMedia('photo', 'cv'))
       .lean()
       .orFail();
+    // Documents saved before `education` existed (lean() skips schema defaults).
+    return {
+      ...about,
+      education: about.education ?? [],
+      careerVisible: about.careerVisible ?? true,
+    };
   }
 
   async replace(dto: UpdateAboutDto) {
@@ -36,7 +42,13 @@ export class AboutService {
 
     await this.about.replaceOne(
       {},
-      { ...dto, photo: dto.photo ?? null, cv: dto.cv ?? null },
+      {
+        ...dto,
+        education: dto.education ?? [],
+        careerVisible: dto.careerVisible ?? true,
+        photo: dto.photo ?? null,
+        cv: dto.cv ?? null,
+      },
       { upsert: true, runValidators: true },
     );
     await this.cache.invalidate(CACHE_KEYS.bootstrap);

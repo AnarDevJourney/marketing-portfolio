@@ -50,7 +50,8 @@
   },
   "about": {
     "cv": "Download CV",
-    "experience": "Experience"
+    "experience": "Experience",
+    "education": "Education"
   },
   "services": {
     "heading": "Making growth *measurable*"
@@ -58,7 +59,8 @@
   "work": {
     "heading": "Selected *work*",
     "view": "View project",
-    "all": "All projects"
+    "all": "All projects",
+    "groups": "Work groups"
   },
   "testimonials": {
     "heading": "What *clients* say",
