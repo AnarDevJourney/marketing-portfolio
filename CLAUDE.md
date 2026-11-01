@@ -10,7 +10,7 @@ Domain: free *.netlify.app (site) + *.duckdns.org (API/media); custom domain opt
 - client/: React + Vite + TS, Tailwind v4, Motion, GSAP+ScrollTrigger, Lenis,
   RTK Query, react-i18next, React Router 8, Ant Design (ADMIN ONLY)
 - server/: NestJS + Mongoose + MongoDB, MinIO, JWT (single admin)
-- deploy/: Docker Compose + Caddy on Hetzner; client on Netlify
+- deploy/: Docker Compose on Hetzner behind host Nginx + certbot; client on Netlify
 - Linting: oxlint (scaffold default) + Prettier in both apps.
 
 ## Rules
