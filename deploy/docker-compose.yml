@@ -1,12 +1,16 @@
-# Production stack on the VPS: API + MongoDB + MinIO behind Caddy (automatic HTTPS).
-# The public site itself is on Netlify (see netlify.toml).
+# Production stack on the VPS: API + MongoDB + MinIO.
+# HTTPS is terminated by the host's Nginx + Let's Encrypt (deploy/nginx.conf) — the same
+# setup as the TaskFlow backend on this VPS. The public site itself is on Netlify.
 #
 #   cd deploy && cp .env.example .env   # fill in the values
 #   docker compose up -d --build
 #
-# Only Caddy is reachable from outside (80/443). Mongo and MinIO stay on the
-# internal network; the MinIO console listens on 127.0.0.1:9001 for an SSH tunnel:
-#   ssh -L 9001:localhost:9001 user@vps   → http://localhost:9001
+# Ports are bound to 127.0.0.1 only and chosen not to clash with TaskFlow
+# (3000, 27017, 6379, 9000, 9001):
+#   3100 → API          (Nginx: /api/)
+#   9100 → MinIO S3     (Nginx: /media/)
+#   9101 → MinIO console (SSH tunnel: ssh -L 9101:localhost:9101 user@vps)
+# MongoDB has no host port at all.
 
 name: portfolio
 
@@ -20,6 +24,7 @@ services:
       MONGO_URI: mongodb://mongo:27017/portfolio
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
+    ports: ['127.0.0.1:3100:3000']
     depends_on: [mongo, minio]
     restart: unless-stopped
 
@@ -35,26 +40,12 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:?set MINIO_ACCESS_KEY in deploy/.env}
       MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:?set MINIO_SECRET_KEY in deploy/.env}
-    ports: ['127.0.0.1:9001:9001']
+    ports:
+      - '127.0.0.1:9100:9000'
+      - '127.0.0.1:9101:9001'
     volumes: [minio_data:/data]
-    restart: unless-stopped
-
-  caddy:
-    image: caddy:2
-    ports: ['80:80', '443:443', '443:443/udp']
-    environment:
-      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in deploy/.env}
-      MEDIA_DOMAIN: ${MEDIA_DOMAIN:?set MEDIA_DOMAIN in deploy/.env}
-      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in deploy/.env}
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on: [api, minio]
     restart: unless-stopped
 
 volumes:
   mongo_data: {}
   minio_data: {}
-  caddy_data: {}
-  caddy_config: {}

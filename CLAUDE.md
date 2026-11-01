@@ -4,7 +4,7 @@
 Marketing portfolio website for a marketing professional.
 Priority: visual quality, animations, distinct modern UI. Small admin panel.
 Full spec: docs/SPEC.md — read the relevant section before starting a task.
-Domain placeholder: domain.az.
+Domain: free *.netlify.app (site) + *.duckdns.org (API/media); custom domain optional later.
 
 ## Stack
 - client/: React + Vite + TS, Tailwind v4, Motion, GSAP+ScrollTrigger, Lenis,
@@ -77,8 +77,9 @@ Domain placeholder: domain.az.
   - NOTE: seed/build run `nest build`, which wipes dist/ — a running start:dev may need a restart
   - test:e2e needs local infra running; uses DB `portfolio_e2e` + bucket `media-e2e`
   - Swagger (non-production): http://localhost:3000/api/docs
-- deploy: docs/DEPLOY.md — VPS: deploy/docker-compose.yml (+ Caddyfile, .env.example, backup.sh,
-  update.sh), server/Dockerfile; Netlify: netlify.toml (root)
+- deploy (free, same as TaskFlow on the same VPS): docs/DEPLOY.md — VPS: deploy/docker-compose.yml
+  (127.0.0.1:3100 API, 9100/9101 MinIO; host Nginx + certbot via deploy/nginx.conf, DuckDNS domain,
+  /api + /media on one host), server/Dockerfile; Netlify (free *.netlify.app): netlify.toml (root)
 - local infra: docker compose -f deploy/docker-compose.dev.yml up -d
   (Mongo :27017, MinIO API :9000, console :9001 — minioadmin/minioadmin)
 
