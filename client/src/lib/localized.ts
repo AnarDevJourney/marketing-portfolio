@@ -1,4 +1,4 @@
-import type { Locale, LocalizedString } from '../api/types'
+import type { Locale, LocalizedString } from '../api/types.ts'
 
 /** Picks the text for `locale`, falling back to the default locale, then to any non-empty value. */
 export function localize(

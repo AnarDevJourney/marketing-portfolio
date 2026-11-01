@@ -270,7 +270,7 @@ function GroupTabs({
             )}
             <span className="relative">
               {o.label}
-              <sup className="ml-1 text-[0.65em] opacity-60">
+              <sup className="ml-1 text-[0.65em] opacity-80">
                 {String(o.count).padStart(2, '0')}
               </sup>
             </span>

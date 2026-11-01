@@ -5,6 +5,7 @@ import { Navigate, useLocation, useOutlet, useParams } from 'react-router'
 import { useGetBootstrapQuery } from '../../api/publicApi'
 import { LOCALES, type Locale } from '../../api/types'
 import { useIsTouch } from '../../hooks/useIsTouch'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 import {
   LOCALE_STORAGE_KEY,
   LocaleContext,
@@ -37,6 +38,7 @@ export function SiteLayout() {
   const location = useLocation()
   const outlet = useOutlet()
   const isTouch = useIsTouch()
+  const reduced = useReducedMotion()
   const { data, isError, refetch } = useGetBootstrapQuery()
   const [showPreloader, setShowPreloader] = useState(() => !hasSeenPreloader())
 
@@ -90,7 +92,9 @@ export function SiteLayout() {
     )
   }
 
+  // The intro and the custom cursor are pure motion: off with "reduce motion".
   const preloader = showPreloader &&
+    !reduced &&
     (!settings || settings.features.preloader) && (
       <Preloader
         name={settings?.siteName ?? ''}
@@ -105,8 +109,14 @@ export function SiteLayout() {
   return (
     <LocaleContext.Provider value={{ locale, defaultLocale, enabled }}>
       <SmoothScroll enabled={settings.features.smoothScroll} />
-      {settings.features.customCursor && !isTouch && <Cursor />}
+      {settings.features.customCursor && !isTouch && !reduced && <Cursor />}
       {preloader}
+      <a
+        href="#main"
+        className="sr-only z-[60] rounded-full bg-fg px-5 py-3 text-sm text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      >
+        {t('common.skipToContent')}
+      </a>
       <Header settings={settings} sections={data.sections} />
       <AnimatePresence mode="wait" custom={fromCard}>
         <PageTransition
@@ -114,7 +124,9 @@ export function SiteLayout() {
           label={settings.siteName}
           skip={fromCard}
         >
-          <main>{langValid ? outlet : <NotFoundPage />}</main>
+          <main id="main" tabIndex={-1} className="outline-none">
+            {langValid ? outlet : <NotFoundPage />}
+          </main>
           <Footer settings={settings} />
         </PageTransition>
       </AnimatePresence>

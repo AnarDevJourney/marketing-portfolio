@@ -32,7 +32,8 @@ export function scrollToTarget(
     lenis.scrollTo(target, { immediate, offset, duration: 1.4 })
     return
   }
-  const behavior: ScrollBehavior = immediate ? 'instant' : 'smooth'
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const behavior: ScrollBehavior = immediate || reduce ? 'instant' : 'smooth'
   if (typeof target === 'number') {
     window.scrollTo({ top: target + offset, behavior })
     return

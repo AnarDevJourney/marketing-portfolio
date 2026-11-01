@@ -18,7 +18,9 @@
   "menu": {
     "open": "Меню",
     "close": "Закрыть",
-    "language": "Язык"
+    "language": "Язык",
+    "mainNav": "Основная навигация",
+    "menuNav": "Навигация меню"
   },
   "cursor": {
     "view": "Смотреть",
@@ -30,7 +32,8 @@
     "backToTop": "Наверх",
     "loading": "Загрузка",
     "retry": "Повторить",
-    "comingSoon": "Скоро"
+    "comingSoon": "Скоро",
+    "skipToContent": "Перейти к содержимому"
   },
   "error": {
     "title": "Что-то пошло не так",

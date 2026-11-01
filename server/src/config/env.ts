@@ -35,6 +35,9 @@ export const envSchema = z.object({
   ADMIN_EMAIL: optional(z.email()),
   ADMIN_PASSWORD: optional(z.string().min(8)),
 
+  // optional: Netlify build hook, called (debounced) after admin content changes
+  NETLIFY_BUILD_HOOK_URL: optional(z.url()),
+
   // optional contact notifications
   SMTP_URL: optional(z.string()),
   NOTIFY_EMAIL: optional(z.email()),

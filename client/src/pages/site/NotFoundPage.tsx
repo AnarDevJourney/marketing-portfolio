@@ -5,10 +5,13 @@ import { SplitText } from '../../components/motion/SplitText'
 import { Button } from '../../components/ui/Button'
 import { Container } from '../../components/ui/Container'
 import { useLocalePath } from '../../hooks/useLocale'
+import { useSeo } from '../../hooks/useSeo'
+import { notFoundPage } from '../../lib/seo'
 
 export default function NotFoundPage() {
   const { t } = useTranslation()
   const path = useLocalePath()
+  useSeo((boot) => notFoundPage(t('notFound.title'), boot.settings))
   return (
     <Container className="flex min-h-svh flex-col justify-center pt-32 pb-16">
       <SplitText

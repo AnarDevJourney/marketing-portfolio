@@ -4,7 +4,7 @@ import {
   useMotionValueEvent,
   useScroll,
 } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate } from 'react-router'
 import type { Locale, SectionKey, Settings } from '../../api/types'
@@ -42,6 +42,8 @@ export function Header({
   const { scrollY } = useScroll()
   const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const links = NAV_SECTIONS.filter((key) => sections.includes(key))
   const isHome = stripLocale(pathname) === '/'
@@ -54,9 +56,19 @@ export function Header({
   useEffect(() => {
     setScrollLocked(open)
     if (!open) return
+    // Keyboard users land in the menu; closing returns focus to the toggle.
+    const toggle = toggleRef.current
+    const id = setTimeout(
+      () => menuRef.current?.querySelector<HTMLElement>('nav button')?.focus(),
+      50,
+    )
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      clearTimeout(id)
+      window.removeEventListener('keydown', onKey)
+      toggle?.focus({ preventScroll: true })
+    }
   }, [open])
 
   const goTo = (key: SectionKey) => {
@@ -101,7 +113,7 @@ export function Header({
 
           <nav
             className={`hidden items-center gap-10 transition-opacity duration-300 md:flex ${open ? 'pointer-events-none opacity-0' : ''}`}
-            aria-label="Main"
+            aria-label={t('menu.mainNav')}
             aria-hidden={open}
           >
             {links.map((key) => (
@@ -131,7 +143,7 @@ export function Header({
                     className={
                       code === locale
                         ? 'text-fg'
-                        : 'text-fg/40 transition-colors hover:text-fg'
+                        : 'text-fg/55 transition-colors hover:text-fg'
                     }
                   >
                     {code}
@@ -140,8 +152,10 @@ export function Header({
               </div>
             )}
             <button
+              ref={toggleRef}
               onClick={() => setOpen((o) => !o)}
-              className="flex items-center gap-3 text-label text-fg"
+              // -my-4 py-4: a ~44px tap target without moving the bar's layout
+              className="-my-4 flex items-center gap-3 py-4 text-label text-fg"
               aria-expanded={open}
               aria-controls="site-menu"
             >
@@ -162,7 +176,11 @@ export function Header({
       <AnimatePresence>
         {open && (
           <m.div
+            ref={menuRef}
             id="site-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('menu.menuNav')}
             className="fixed inset-0 z-40 flex flex-col bg-surface pt-28"
             initial={
               reduced ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }
@@ -176,7 +194,7 @@ export function Header({
             transition={{ duration: 0.8, ease: EASE.inOut }}
           >
             <Container className="flex flex-1 flex-col justify-between pb-gutter">
-              <nav aria-label="Menu">
+              <nav aria-label={t('menu.menuNav')}>
                 <ul className="flex flex-col">
                   {links.map((key, i) => (
                     <li

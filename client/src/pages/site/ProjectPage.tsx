@@ -1,8 +1,8 @@
 import { animate } from 'motion/react'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router'
-import { useGetBootstrapQuery, useGetProjectQuery } from '../../api/publicApi'
+import { useGetProjectQuery } from '../../api/publicApi'
 import type { ProjectDetail } from '../../api/types'
 import { Counter } from '../../components/motion/Counter'
 import { Reveal, RevealGroup, RevealItem } from '../../components/motion/Reveal'
@@ -11,12 +11,13 @@ import { Container } from '../../components/ui/Container'
 import { Img } from '../../components/ui/Img'
 import { Lightbox } from '../../components/ui/Lightbox'
 import { SectionLabel } from '../../components/ui/SectionLabel'
-import { useLocalePath, useLocalized } from '../../hooks/useLocale'
+import { useLocale, useLocalePath, useLocalized } from '../../hooks/useLocale'
+import { SITE_URL, useSeo } from '../../hooks/useSeo'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { scrollToTarget } from '../../lib/lenis'
-import { plainText } from '../../lib/localized'
 import { renderMarkdown } from '../../lib/markdown'
 import { EASE } from '../../lib/motion'
+import { projectPage } from '../../lib/seo'
 import { clearCoverOrigin, getCoverOrigin } from '../../lib/shared-cover'
 import NotFoundPage from './NotFoundPage'
 
@@ -32,8 +33,8 @@ function ProjectView({ project }: { project: ProjectDetail }) {
   const { t } = useTranslation()
   const l = useLocalized()
   const path = useLocalePath()
+  const { locale, defaultLocale } = useLocale()
   const reduced = useReducedMotion()
-  const { data: boot } = useGetBootstrapQuery()
   const coverRef = useRef<HTMLDivElement>(null)
   const [lightbox, setLightbox] = useState<number | null>(null)
   const title = l(project.title)
@@ -69,9 +70,9 @@ function ProjectView({ project }: { project: ProjectDetail }) {
     }
   }, [reduced])
 
-  useEffect(() => {
-    if (boot) document.title = `${plainText(title)} — ${boot.settings.siteName}`
-  }, [boot, title])
+  useSeo((boot) =>
+    projectPage(project, boot.settings, locale, defaultLocale, SITE_URL),
+  )
 
   const meta: [string, string][] = [
     [t('project.client'), project.client],

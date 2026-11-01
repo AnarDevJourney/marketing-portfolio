@@ -45,7 +45,7 @@ export function Footer({ settings }: { settings: Settings }) {
         <p className="mt-16 font-heading text-[clamp(3rem,15vw,16rem)] leading-[0.85] tracking-[-0.05em] break-words">
           {settings.siteName}
         </p>
-        <div className="mt-8 flex flex-wrap justify-between gap-4 text-xs text-fg/40">
+        <div className="mt-8 flex flex-wrap justify-between gap-4 text-xs text-fg/60">
           <span>
             © {YEAR} {settings.siteName}. {t('footer.rights')}
           </span>

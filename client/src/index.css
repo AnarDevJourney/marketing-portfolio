@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+/* Used by the prerendered crawler text (scripts/prerender.ts). */
+@source inline('sr-only');
 
 /*
  * Design tokens — see docs/design/DIRECTION.md.
@@ -127,6 +129,8 @@ html.lenis body {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    /* hover scale / underline sweeps become instant state changes */
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

@@ -40,7 +40,9 @@ export function Img({
         fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
         onLoad={() => setLoaded(true)}
-        className={`h-full w-full object-cover transition-opacity duration-700 ${loaded ? 'opacity-100' : 'opacity-0'} ${imgClassName}`}
+        // Priority (LCP) images paint as soon as they arrive: an opacity-0 start would
+        // keep them out of LCP until React handles onLoad and the fade runs.
+        className={`h-full w-full object-cover ${priority || loaded ? 'opacity-100' : 'opacity-0 transition-opacity duration-700'} ${imgClassName}`}
       />
     </div>
   )

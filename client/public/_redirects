@@ -1,1 +1,2 @@
-/*   /index.html   200
+# Prerendered routes are real files (scripts/prerender.ts); everything else -> SPA shell.
+/*   /spa.html   200

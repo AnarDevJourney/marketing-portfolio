@@ -38,11 +38,9 @@ export function Counter({
   })
   const final = `${prefix}${format.format(to)}${suffix}`
   return (
-    <span
-      ref={ref}
-      className={`tabular-nums ${className ?? ''}`}
-      aria-label={final}
-    >
+    <span ref={ref} className={`tabular-nums ${className ?? ''}`}>
+      {/* aria-label isn't allowed on a plain span: screen readers get the final value as text. */}
+      <span className="sr-only">{final}</span>
       <span aria-hidden>
         {prefix}
         {format.format(reduced ? to : value)}

@@ -6,13 +6,25 @@ export type GsapBundle = {
   ScrollTrigger: typeof import('gsap/ScrollTrigger').ScrollTrigger
 }
 
-export function loadGsap(): Promise<GsapBundle> {
-  gsapPromise ??= Promise.all([
-    import('gsap'),
-    import('gsap/ScrollTrigger'),
-  ]).then(([{ gsap }, { ScrollTrigger }]) => {
-    gsap.registerPlugin(ScrollTrigger)
-    return { gsap, ScrollTrigger }
+/**
+ * Resolves once the browser is idle after the first render, so scroll effects never
+ * compete with the initial paint (LCP) for the main thread.
+ */
+const whenIdle = () =>
+  new Promise<void>((resolve) => {
+    if ('requestIdleCallback' in window)
+      requestIdleCallback(() => resolve(), { timeout: 2000 })
+    else setTimeout(resolve, 300)
   })
+
+export function loadGsap(): Promise<GsapBundle> {
+  gsapPromise ??= whenIdle().then(() =>
+    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
+      ([{ gsap }, { ScrollTrigger }]) => {
+        gsap.registerPlugin(ScrollTrigger)
+        return { gsap, ScrollTrigger }
+      },
+    ),
+  )
   return gsapPromise
 }

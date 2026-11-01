@@ -1,4 +1,4 @@
-import { LazyMotion } from 'motion/react'
+import { LazyMotion, MotionConfig } from 'motion/react'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -22,9 +22,12 @@ createRoot(document.getElementById('root')!).render(
       }
       strict
     >
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      {/* Safety net: with OS "reduce motion", Motion skips transform animations app-wide. */}
+      <MotionConfig reducedMotion="user">
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
+      </MotionConfig>
     </LazyMotion>
   </StrictMode>,
 )

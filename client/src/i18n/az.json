@@ -18,7 +18,9 @@
   "menu": {
     "open": "Menyu",
     "close": "Bağla",
-    "language": "Dil"
+    "language": "Dil",
+    "mainNav": "Əsas naviqasiya",
+    "menuNav": "Menyu naviqasiyası"
   },
   "cursor": {
     "view": "Bax",
@@ -30,7 +32,8 @@
     "backToTop": "Yuxarı qayıt",
     "loading": "Yüklənir",
     "retry": "Yenidən cəhd et",
-    "comingSoon": "Tezliklə"
+    "comingSoon": "Tezliklə",
+    "skipToContent": "Məzmuna keç"
   },
   "error": {
     "title": "Bir şey alınmadı",

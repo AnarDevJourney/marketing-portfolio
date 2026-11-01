@@ -56,9 +56,21 @@ Domain placeholder: domain.az.
   populate with populateMedia(...paths).
 - New fields that reference Media must be added to MEDIA_REFERENCES
   (server/src/modules/media/media.constants.ts) so in-use deletes are blocked.
+- SEO: public pages set their head via `useSeo(boot => homePage|projectPage|notFoundPage(...))`.
+  lib/seo.ts (+ lib/localized.ts, lib/media.ts) is shared with scripts/prerender.ts, which Node
+  runs with type stripping: keep those files React/DOM-free, imports type-only or with `.ts` suffix.
+- `npm run build` runs the prerender: needs the API (VITE_API_URL); writes route files
+  (index.html, en.html, work/<slug>.html…), spa.html (SPA fallback in _redirects), sitemap.xml,
+  robots.txt. Unreachable API → shell only, unless PRERENDER_STRICT=1 (Netlify) → build fails.
+- Admin writes go through PublicCacheService.invalidate(), which also schedules a debounced
+  Netlify rebuild (BuildHookService, NETLIFY_BUILD_HOOK_URL; no-op when unset).
+- Performance: GSAP/Lenis load on idle (lib/gsap.ts); home sections below the fold are
+  React.lazy chunks (HomePage `loaders`) — only Hero/About stay in the main bundle.
+- Section on/off: `SectionVisibility` banner on each section's admin page (settings.sections);
+  About's experience/education block has its own flag (about.careerVisible).
 
 ## Commands
-- client: npm run dev | build | lint | format
+- client: npm run dev | build (incl. prerender) | prerender | lint | format
 - server: npm run start:dev | build | lint | test | test:e2e | format | seed
   - seed: creates admin from ADMIN_EMAIL/ADMIN_PASSWORD + default settings (idempotent)
   - seed:demo: fills a dev DB with fictional demo content + generated images (skips if projects exist)

@@ -13,7 +13,16 @@ import { Container } from '../ui/Container'
 import { Img } from '../ui/Img'
 import { SectionHeading } from './SectionHeading'
 
-export function About({ about, index }: { about: AboutData; index: number }) {
+export function About({
+  about,
+  index,
+  first = false,
+}: {
+  about: AboutData
+  index: number
+  /** First section on the page: the photo is the LCP image, load it eagerly. */
+  first?: boolean
+}) {
   const { t } = useTranslation()
   const l = useLocalized()
   // The whole block can be hidden from the admin ("Təcrübə və təhsil" page).
@@ -36,6 +45,7 @@ export function About({ about, index }: { about: AboutData; index: number }) {
                 <Parallax speed={0.15} className="scale-110">
                   <Img
                     media={about.photo}
+                    priority={first}
                     sizes="(min-width: 768px) 40vw, 100vw"
                     className="aspect-[4/5]"
                   />

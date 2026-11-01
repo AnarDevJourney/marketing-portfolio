@@ -18,7 +18,9 @@
   "menu": {
     "open": "Menu",
     "close": "Close",
-    "language": "Language"
+    "language": "Language",
+    "mainNav": "Main navigation",
+    "menuNav": "Menu navigation"
   },
   "cursor": {
     "view": "View",
@@ -30,7 +32,8 @@
     "backToTop": "Back to top",
     "loading": "Loading",
     "retry": "Try again",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "skipToContent": "Skip to content"
   },
   "error": {
     "title": "Something went wrong",

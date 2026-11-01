@@ -1,12 +1,13 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Global, Module } from '@nestjs/common';
 import { PUBLIC_CACHE_TTL } from './cache-keys.js';
+import { BuildHookService } from './build-hook.service.js';
 import { PublicCacheService } from './public-cache.service.js';
 
 @Global()
 @Module({
   imports: [CacheModule.register({ ttl: PUBLIC_CACHE_TTL })],
-  providers: [PublicCacheService],
+  providers: [PublicCacheService, BuildHookService],
   exports: [PublicCacheService],
 })
 export class PublicCacheModule {}
