@@ -13,15 +13,13 @@ import { useState } from 'react'
 import { errorMessage, toId } from '../../admin/utils'
 import { useGetHeroQuery, useUpdateHeroMutation } from '../../api/adminApi'
 import type { Hero } from '../../api/types'
+import { HIGHLIGHT_HINT, INLINE_MARKDOWN_HINT } from '../../admin/hints'
 import { lsRequired } from '../../admin/rules'
 import { LocalizedInput } from '../../components/admin/LocalizedInput'
 import { MediaPicker } from '../../components/admin/MediaPicker'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { SectionVisibility } from '../../components/admin/SectionVisibility'
 import { useUnsavedChanges } from '../../components/admin/useUnsavedChanges'
-
-export const HIGHLIGHT_HINT =
-  'Söz və ya ifadəni *ulduz* içinə alsanız, saytda arxasında marker xətti çəkiləcək.'
 
 export default function HeroPage() {
   const { message } = App.useApp()
@@ -96,7 +94,11 @@ export default function HeroPage() {
           >
             <LocalizedInput maxLength={120} />
           </Form.Item>
-          <Form.Item name="subtitle" label="Alt mətn">
+          <Form.Item
+            name="subtitle"
+            label="Alt mətn"
+            extra={INLINE_MARKDOWN_HINT}
+          >
             <LocalizedInput rows={2} maxLength={300} />
           </Form.Item>
           <Form.Item

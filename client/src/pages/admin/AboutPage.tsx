@@ -22,10 +22,7 @@ import { MediaPicker } from '../../components/admin/MediaPicker'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { SectionVisibility } from '../../components/admin/SectionVisibility'
 import { useUnsavedChanges } from '../../components/admin/useUnsavedChanges'
-import { HIGHLIGHT_HINT } from './HeroPage'
-
-export const MARKDOWN_HINT =
-  'Qalın: **mətn** · Kursiv: *mətn* · Link: [mətn](https://...) · Yeni paraqraf üçün boş sətir buraxın.'
+import { HIGHLIGHT_HINT, MARKDOWN_HINT } from '../../admin/hints'
 
 export default function AboutPage() {
   const { message } = App.useApp()

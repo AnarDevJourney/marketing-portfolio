@@ -10,6 +10,7 @@ import { ServiceIcon } from '../../lib/icons'
 import { RevealGroup, RevealItem } from '../motion/Reveal'
 import { Container } from '../ui/Container'
 import { SectionHeading } from './SectionHeading'
+import { renderInline } from '../../lib/markdown'
 
 export function Services({ index }: { index: number }) {
   const { t } = useTranslation()
@@ -93,7 +94,9 @@ function ServiceCard({
       </div>
       <div>
         <h3 className="text-h3">{l(service.title)}</h3>
-        <p className="mt-4 max-w-md text-fg/60">{l(service.description)}</p>
+        <p className="mt-4 max-w-md text-fg/60">
+          {renderInline(l(service.description))}
+        </p>
       </div>
     </article>
   )

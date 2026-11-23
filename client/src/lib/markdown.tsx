@@ -12,14 +12,27 @@ export function renderMarkdown(source: string, className?: string): ReactNode {
     .split(/\n{2,}/)
     .map((para, i) => (
       <p key={i} className={className}>
-        {para.split('\n').map((line, j) => (
-          <Fragment key={j}>
-            {j > 0 && <br />}
-            {inline(line)}
-          </Fragment>
-        ))}
+        {lines(para)}
       </p>
     ))
+}
+
+/**
+ * Same inline rules (**bold**, *italic*, [links](https://…), line breaks)
+ * without paragraph wrapping — for short texts that sit inside an existing
+ * element (hero subtitle, quote, card description…).
+ */
+export function renderInline(source: string): ReactNode {
+  return lines(source.trim())
+}
+
+function lines(text: string): ReactNode[] {
+  return text.split('\n').map((line, j) => (
+    <Fragment key={j}>
+      {j > 0 && <br />}
+      {inline(line)}
+    </Fragment>
+  ))
 }
 
 const SAFE_URL = /^(https?:\/\/|mailto:)/i

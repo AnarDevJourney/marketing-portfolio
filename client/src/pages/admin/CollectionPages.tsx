@@ -40,6 +40,7 @@ import {
 } from '../../api/adminApi'
 import { ServiceIcon, SERVICE_ICONS } from '../../lib/icons'
 import { lsRequired } from '../../admin/rules'
+import { INLINE_MARKDOWN_HINT } from '../../admin/hints'
 import { LocalizedInput } from '../../components/admin/LocalizedInput'
 import { MediaPicker } from '../../components/admin/MediaPicker'
 import { MediaThumb } from '../../components/admin/MediaThumb'
@@ -367,7 +368,12 @@ export function TestimonialsPage() {
           <Form.Item name="company" label="Şirkət (istəyə bağlı)">
             <Input maxLength={120} />
           </Form.Item>
-          <Form.Item name="quote" label="Sitat" rules={[lsRequired('Sitat')]}>
+          <Form.Item
+            name="quote"
+            label="Sitat"
+            extra={INLINE_MARKDOWN_HINT}
+            rules={[lsRequired('Sitat')]}
+          >
             <LocalizedInput rows={4} maxLength={1000} />
           </Form.Item>
           <Form.Item name="avatar" label="Foto (istəyə bağlı)">
@@ -443,6 +449,7 @@ export function ServicesPage() {
           <Form.Item
             name="description"
             label="Təsvir"
+            extra={INLINE_MARKDOWN_HINT}
             rules={[lsRequired('Təsvir')]}
           >
             <LocalizedInput rows={3} maxLength={500} />

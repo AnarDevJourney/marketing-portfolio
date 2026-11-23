@@ -31,7 +31,8 @@ import {
 import { PageHeader } from '../../components/admin/PageHeader'
 import { useUnsavedChanges } from '../../components/admin/useUnsavedChanges'
 import { useWorkGroupOptions } from '../../admin/workGroups'
-import { MARKDOWN_HINT, MetricFields } from './AboutPage'
+import { INLINE_MARKDOWN_HINT, MARKDOWN_HINT } from '../../admin/hints'
+import { MetricFields } from './AboutPage'
 
 const EMPTY: Partial<AdminProject> = {
   slug: '',
@@ -192,6 +193,7 @@ function ProjectForm({ project }: { project?: AdminProject }) {
               <Form.Item
                 name="summary"
                 label="Qısa təsvir (kartda görünür)"
+                extra={INLINE_MARKDOWN_HINT}
                 rules={[lsRequired('Qısa təsvir')]}
               >
                 <LocalizedInput rows={2} maxLength={300} />

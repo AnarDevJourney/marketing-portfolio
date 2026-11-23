@@ -15,7 +15,7 @@ import { useLocale, useLocalePath, useLocalized } from '../../hooks/useLocale'
 import { SITE_URL, useSeo } from '../../hooks/useSeo'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { scrollToTarget } from '../../lib/lenis'
-import { renderMarkdown } from '../../lib/markdown'
+import { renderInline, renderMarkdown } from '../../lib/markdown'
 import { EASE } from '../../lib/motion'
 import { projectPage } from '../../lib/seo'
 import { clearCoverOrigin, getCoverOrigin } from '../../lib/shared-cover'
@@ -124,7 +124,7 @@ function ProjectView({ project }: { project: ProjectDetail }) {
 
       <Container className="py-section">
         <Reveal className="max-w-3xl font-heading text-h3">
-          {l(project.summary)}
+          {renderInline(l(project.summary))}
         </Reveal>
 
         <div className="mt-section grid gap-16 md:grid-cols-2 md:gap-10">

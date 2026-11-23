@@ -8,6 +8,7 @@ import { EASE } from '../../lib/motion'
 import { Container } from '../ui/Container'
 import { Img } from '../ui/Img'
 import { SectionHeading } from './SectionHeading'
+import { renderInline } from '../../lib/markdown'
 
 /** One big quote at a time; drag/swipe or use the arrows. */
 export function Testimonials({ index }: { index: number }) {
@@ -60,7 +61,7 @@ export function Testimonials({ index }: { index: number }) {
             >
               <blockquote className="max-w-[28ch] font-heading text-h2">
                 <span className="text-primary">“</span>
-                {l(item.quote)}
+                {renderInline(l(item.quote))}
                 <span className="text-primary">”</span>
               </blockquote>
               <figcaption className="mt-12 flex items-center gap-5">

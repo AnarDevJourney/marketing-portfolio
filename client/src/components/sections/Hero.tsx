@@ -12,6 +12,7 @@ import { SplitText } from '../motion/SplitText'
 import { Button } from '../ui/Button'
 import { Container } from '../ui/Container'
 import { Img } from '../ui/Img'
+import { renderInline } from '../../lib/markdown'
 
 /** Small screens and data-saver mode get the poster instead of the video. */
 function useLightMode() {
@@ -94,7 +95,7 @@ export function Hero({ hero }: { hero: HeroData }) {
         <div className="mt-12 flex flex-wrap items-end justify-between gap-10">
           {l(hero.subtitle) && (
             <Reveal delay={0.6} className="max-w-md text-lead text-fg/70">
-              {l(hero.subtitle)}
+              {renderInline(l(hero.subtitle))}
             </Reveal>
           )}
           <Reveal delay={0.8}>

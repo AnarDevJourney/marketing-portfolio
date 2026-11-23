@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import type { About as AboutData, TimelineEntry } from '../../api/types'
 import { useLocalized } from '../../hooks/useLocale'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { renderMarkdown } from '../../lib/markdown'
+import { renderInline, renderMarkdown } from '../../lib/markdown'
 import { Counter } from '../motion/Counter'
 import { Parallax } from '../motion/Parallax'
 import { Reveal, RevealGroup, RevealItem } from '../motion/Reveal'
@@ -140,7 +140,7 @@ function Timeline({ label, items }: { label: string; items: TimelineEntry[] }) {
               <p className="mt-1 text-fg/60">{item.company}</p>
               {item.description && l(item.description) && (
                 <p className="mt-3 max-w-xl text-fg/60">
-                  {l(item.description)}
+                  {renderInline(l(item.description))}
                 </p>
               )}
             </Reveal>

@@ -6,6 +6,7 @@ import { lsRequired } from '../../admin/rules'
 import { emptyLs, errorMessage } from '../../admin/utils'
 import { useGetAboutQuery, useUpdateAboutMutation } from '../../api/adminApi'
 import type { About } from '../../api/types'
+import { INLINE_MARKDOWN_HINT } from '../../admin/hints'
 import { LocalizedInput } from '../../components/admin/LocalizedInput'
 import { PageHeader } from '../../components/admin/PageHeader'
 import { VisibilityBanner } from '../../components/admin/SectionVisibility'
@@ -171,6 +172,7 @@ function TimelineCard({
                 <Form.Item
                   name={[f.name, 'description']}
                   label="Qısa təsvir (istəyə bağlı)"
+                  extra={INLINE_MARKDOWN_HINT}
                 >
                   <LocalizedInput rows={2} maxLength={500} />
                 </Form.Item>
