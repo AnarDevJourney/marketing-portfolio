@@ -70,6 +70,7 @@ Domain: free *.netlify.app (site) + *.duckdns.org (API/media); custom domain opt
   About's experience/education block has its own flag (about.careerVisible).
 
 ## Commands
+- root: ./dev.sh [--seed | --demo | --down] — infra + server + client in one terminal
 - client: npm run dev | build (incl. prerender) | prerender | lint | format
 - server: npm run start:dev | build | lint | test | test:e2e | format | seed
   - seed: creates admin from ADMIN_EMAIL/ADMIN_PASSWORD + default settings (idempotent)
